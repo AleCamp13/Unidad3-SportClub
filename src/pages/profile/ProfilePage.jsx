@@ -4,7 +4,7 @@ import { Plus, Trash2 } from 'lucide-react'
 import useAuth from '../../hooks/useAuth'
 import * as authService from '../../services/authService'
 import { validatePasswordChange, validateProfile } from '../../utils/authValidation'
-import { normalizeFieldErrors } from '../../utils/formErrors'
+import { fieldErrorProps, normalizeFieldErrors } from '../../utils/formErrors'
 
 const ROLE_LABELS = { admin: 'Administrador', coach: 'Entrenador', user: 'Usuario' }
 const EMPTY_SPORT = { name: '', frequency_per_week: 1 }
@@ -103,25 +103,25 @@ export default function ProfilePage() {
             <Col md={6}>
               <Form.Group className="mb-3" controlId="profile-name">
                 <Form.Label>Nombre completo</Form.Label>
-                <Form.Control isInvalid={Boolean(profileErrors.full_name)} name="full_name" onChange={updateProfileField} value={profile.full_name} />
-                <Form.Control.Feedback type="invalid">{profileErrors.full_name}</Form.Control.Feedback>
+                <Form.Control {...fieldErrorProps(profileErrors.full_name, 'profile-name-error')} isInvalid={Boolean(profileErrors.full_name)} name="full_name" onChange={updateProfileField} required value={profile.full_name} />
+                <Form.Control.Feedback id="profile-name-error" type="invalid">{profileErrors.full_name}</Form.Control.Feedback>
               </Form.Group>
             </Col>
             <Col md={6}>
               <Form.Group className="mb-3" controlId="profile-email">
                 <Form.Label>Correo electrónico</Form.Label>
-                <Form.Control isInvalid={Boolean(profileErrors.email)} name="email" onChange={updateProfileField} type="email" value={profile.email} />
-                <Form.Control.Feedback type="invalid">{profileErrors.email}</Form.Control.Feedback>
+                <Form.Control {...fieldErrorProps(profileErrors.email, 'profile-email-error')} isInvalid={Boolean(profileErrors.email)} name="email" onChange={updateProfileField} required type="email" value={profile.email} />
+                <Form.Control.Feedback id="profile-email-error" type="invalid">{profileErrors.email}</Form.Control.Feedback>
               </Form.Group>
             </Col>
           </Row>
           <Form.Group className="mb-4 profile-date" controlId="profile-birth-date">
             <Form.Label>Fecha de nacimiento</Form.Label>
-            <Form.Control isInvalid={Boolean(profileErrors.birth_date)} name="birth_date" onChange={updateProfileField} type="date" value={profile.birth_date} />
-            <Form.Control.Feedback type="invalid">{profileErrors.birth_date}</Form.Control.Feedback>
+            <Form.Control {...fieldErrorProps(profileErrors.birth_date, 'profile-birth-date-error')} isInvalid={Boolean(profileErrors.birth_date)} name="birth_date" onChange={updateProfileField} required type="date" value={profile.birth_date} />
+            <Form.Control.Feedback id="profile-birth-date-error" type="invalid">{profileErrors.birth_date}</Form.Control.Feedback>
           </Form.Group>
 
-          <fieldset className="sport-fields">
+          <fieldset {...fieldErrorProps(profileErrors.sports, 'profile-sports-error')} className="sport-fields">
             <legend>Deportes</legend>
             {profile.sports.map((sport, index) => (
               <div className="sport-fields__row" key={index}>
@@ -138,7 +138,7 @@ export default function ProfilePage() {
                 </Button>
               </div>
             ))}
-            {profileErrors.sports && <div className="invalid-feedback d-block">{profileErrors.sports}</div>}
+            {profileErrors.sports && <div className="invalid-feedback d-block" id="profile-sports-error">{profileErrors.sports}</div>}
             <Button className="icon-text-button" onClick={() => setProfile((current) => ({ ...current, sports: [...current.sports, { ...EMPTY_SPORT }] }))} type="button" variant="outline-secondary">
               <Plus aria-hidden="true" size={18} /> Agregar deporte
             </Button>
@@ -159,18 +159,18 @@ export default function ProfilePage() {
         <Form className="password-form" noValidate onSubmit={handlePasswordSubmit}>
           <Form.Group controlId="current-password">
             <Form.Label>Contraseña actual</Form.Label>
-            <Form.Control autoComplete="current-password" isInvalid={Boolean(passwordErrors.current_password)} onChange={(event) => setPassword((current) => ({ ...current, current_password: event.target.value }))} type="password" value={password.current_password} />
-            <Form.Control.Feedback type="invalid">{passwordErrors.current_password}</Form.Control.Feedback>
+            <Form.Control {...fieldErrorProps(passwordErrors.current_password, 'current-password-error')} autoComplete="current-password" isInvalid={Boolean(passwordErrors.current_password)} onChange={(event) => setPassword((current) => ({ ...current, current_password: event.target.value }))} required type="password" value={password.current_password} />
+            <Form.Control.Feedback id="current-password-error" type="invalid">{passwordErrors.current_password}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="new-password">
             <Form.Label>Nueva contraseña</Form.Label>
-            <Form.Control autoComplete="new-password" isInvalid={Boolean(passwordErrors.new_password)} onChange={(event) => setPassword((current) => ({ ...current, new_password: event.target.value }))} type="password" value={password.new_password} />
-            <Form.Control.Feedback type="invalid">{passwordErrors.new_password}</Form.Control.Feedback>
+            <Form.Control {...fieldErrorProps(passwordErrors.new_password, 'new-password-error')} autoComplete="new-password" isInvalid={Boolean(passwordErrors.new_password)} onChange={(event) => setPassword((current) => ({ ...current, new_password: event.target.value }))} required type="password" value={password.new_password} />
+            <Form.Control.Feedback id="new-password-error" type="invalid">{passwordErrors.new_password}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="confirm-new-password">
             <Form.Label>Confirmar nueva contraseña</Form.Label>
-            <Form.Control autoComplete="new-password" isInvalid={Boolean(passwordErrors.confirm_password)} onChange={(event) => setPassword((current) => ({ ...current, confirm_password: event.target.value }))} type="password" value={password.confirm_password} />
-            <Form.Control.Feedback type="invalid">{passwordErrors.confirm_password}</Form.Control.Feedback>
+            <Form.Control {...fieldErrorProps(passwordErrors.confirm_password, 'confirm-new-password-error')} autoComplete="new-password" isInvalid={Boolean(passwordErrors.confirm_password)} onChange={(event) => setPassword((current) => ({ ...current, confirm_password: event.target.value }))} required type="password" value={password.confirm_password} />
+            <Form.Control.Feedback id="confirm-new-password-error" type="invalid">{passwordErrors.confirm_password}</Form.Control.Feedback>
           </Form.Group>
           <Button disabled={isSavingPassword} type="submit">
             {isSavingPassword && <Spinner aria-hidden="true" className="me-2" size="sm" />}

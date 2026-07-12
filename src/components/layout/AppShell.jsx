@@ -4,6 +4,7 @@ import { NavLink, Outlet } from 'react-router-dom'
 export default function AppShell({ role, roleLabel, navItems, user, onLogout }) {
   return (
     <div className="app-shell" data-role={role}>
+      <a className="skip-link" href="#main-content">Saltar al contenido principal</a>
       <header className="app-header">
         <NavLink className="brand" to="/" aria-label="SportClub, ir al inicio">
           <img src="/assets/img/logo.png" alt="SportClub" />
@@ -42,7 +43,7 @@ export default function AppShell({ role, roleLabel, navItems, user, onLogout }) 
         <p className="app-sidebar__meta">Gestión deportiva</p>
       </aside>
 
-      <main className="app-main">
+      <main className="app-main" id="main-content" tabIndex="-1">
         <Outlet />
       </main>
     </div>

@@ -1,5 +1,6 @@
+import { validateBirthDate } from './validators'
+
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/
 const USER_ROLES = ['user', 'coach', 'admin']
 
 function text(value) {
@@ -48,9 +49,8 @@ export function validateAdminUser(input, { editing = false } = {}) {
   else if (email.length > 150) errors.email = 'El correo no puede superar los 150 caracteres.'
 
   if (!USER_ROLES.includes(role)) errors.role = 'Selecciona un rol válido.'
-  if (birthDate && !DATE_PATTERN.test(birthDate)) {
-    errors.birth_date = 'La fecha debe tener formato AAAA-MM-DD.'
-  }
+  if (birthDate) errors.birth_date = validateBirthDate(birthDate, { label: 'La fecha de nacimiento' })
+  if (!errors.birth_date) delete errors.birth_date
 
   const requiresPassword = !editing || password.length > 0 || confirmPassword.length > 0
   if (requiresPassword && password.length < 8) {

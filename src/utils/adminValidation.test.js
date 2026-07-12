@@ -57,6 +57,13 @@ describe('validateAdminUser', () => {
     expect(result.errors.password).toMatch(/al menos 8/i)
     expect(result.errors.confirm_password).toMatch(/confirmar/i)
   })
+
+  it('rejects impossible and future birth dates', () => {
+    expect(validateAdminUser({ ...validUser, birth_date: '2026-02-30' }).errors.birth_date)
+      .toBe('La fecha de nacimiento no es una fecha válida.')
+    expect(validateAdminUser({ ...validUser, birth_date: '2999-01-01' }).errors.birth_date)
+      .toBe('La fecha de nacimiento no puede estar en el futuro.')
+  })
 })
 
 describe('validateAdminSport', () => {

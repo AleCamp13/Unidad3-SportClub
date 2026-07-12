@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Alert, Button, Col, Form, Modal, Row, Spinner } from 'react-bootstrap'
 import { validateAssignment } from '../../utils/schedulingValidation'
-import { normalizeFieldErrors } from '../../utils/formErrors'
+import { fieldErrorProps, normalizeFieldErrors } from '../../utils/formErrors'
 
 const EMPTY_FORM = { sport_id: '', room_id: '', coach_id: '', observation: '', status: true }
 
@@ -77,38 +77,38 @@ export default function AssignmentFormModal({
             <Col md={4}>
               <Form.Group className="mb-3" controlId="assignment-sport">
                 <Form.Label>Deporte</Form.Label>
-                <Form.Select autoFocus isInvalid={Boolean(errors.sport_id)} name="sport_id" onChange={updateField} value={form.sport_id}>
+                <Form.Select {...fieldErrorProps(errors.sport_id, 'assignment-sport-error')} autoFocus isInvalid={Boolean(errors.sport_id)} name="sport_id" onChange={updateField} required value={form.sport_id}>
                   <option value="">Seleccionar</option>
                   {sports.map((sport) => <option disabled={optionIsDisabled(sport, form.sport_id)} key={sport.id} value={sport.id}>{sport.name}{sport.status === false ? ' (inactivo)' : ''}</option>)}
                 </Form.Select>
-                <Form.Control.Feedback type="invalid">{errors.sport_id}</Form.Control.Feedback>
+                <Form.Control.Feedback id="assignment-sport-error" type="invalid">{errors.sport_id}</Form.Control.Feedback>
               </Form.Group>
             </Col>
             <Col md={4}>
               <Form.Group className="mb-3" controlId="assignment-room">
                 <Form.Label>Sala</Form.Label>
-                <Form.Select isInvalid={Boolean(errors.room_id)} name="room_id" onChange={updateField} value={form.room_id}>
+                <Form.Select {...fieldErrorProps(errors.room_id, 'assignment-room-error')} isInvalid={Boolean(errors.room_id)} name="room_id" onChange={updateField} required value={form.room_id}>
                   <option value="">Seleccionar</option>
                   {rooms.map((room) => <option disabled={optionIsDisabled(room, form.room_id)} key={room.id} value={room.id}>{room.name}{room.status === false ? ' (inactiva)' : ''}</option>)}
                 </Form.Select>
-                <Form.Control.Feedback type="invalid">{errors.room_id}</Form.Control.Feedback>
+                <Form.Control.Feedback id="assignment-room-error" type="invalid">{errors.room_id}</Form.Control.Feedback>
               </Form.Group>
             </Col>
             <Col md={4}>
               <Form.Group className="mb-3" controlId="assignment-coach">
                 <Form.Label>Entrenador</Form.Label>
-                <Form.Select isInvalid={Boolean(errors.coach_id)} name="coach_id" onChange={updateField} value={form.coach_id}>
+                <Form.Select {...fieldErrorProps(errors.coach_id, 'assignment-coach-error')} isInvalid={Boolean(errors.coach_id)} name="coach_id" onChange={updateField} required value={form.coach_id}>
                   <option value="">Seleccionar</option>
                   {coaches.map((coach) => <option key={coach.id} value={coach.id}>{coach.full_name}</option>)}
                 </Form.Select>
-                <Form.Control.Feedback type="invalid">{errors.coach_id}</Form.Control.Feedback>
+                <Form.Control.Feedback id="assignment-coach-error" type="invalid">{errors.coach_id}</Form.Control.Feedback>
               </Form.Group>
             </Col>
           </Row>
           <Form.Group className="mb-3" controlId="assignment-observation">
             <Form.Label>Observación</Form.Label>
-            <Form.Control as="textarea" isInvalid={Boolean(errors.observation)} name="observation" onChange={updateField} rows={3} value={form.observation} />
-            <Form.Control.Feedback type="invalid">{errors.observation}</Form.Control.Feedback>
+            <Form.Control {...fieldErrorProps(errors.observation, 'assignment-observation-error')} as="textarea" isInvalid={Boolean(errors.observation)} name="observation" onChange={updateField} rows={3} value={form.observation} />
+            <Form.Control.Feedback id="assignment-observation-error" type="invalid">{errors.observation}</Form.Control.Feedback>
           </Form.Group>
           <Form.Check checked={form.status} id="assignment-status" label="Asignación activa" name="status" onChange={updateField} type="switch" />
         </Modal.Body>

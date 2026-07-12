@@ -1,4 +1,24 @@
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/
+
+function localIsoDate(date = new Date()) {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+export function validateBirthDate(value, { label = 'Fecha de nacimiento' } = {}) {
+  if (!ISO_DATE_PATTERN.test(value)) return `${label} debe tener formato AAAA-MM-DD.`
+
+  const parsed = new Date(`${value}T00:00:00Z`)
+  if (Number.isNaN(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== value) {
+    return `${label} no es una fecha válida.`
+  }
+  if (value > localIsoDate()) return `${label} no puede estar en el futuro.`
+
+  return null
+}
 
 function normalizeValue(value, rules) {
   let normalizedValue = value

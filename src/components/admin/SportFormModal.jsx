@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Alert, Button, Form, Modal, Spinner } from 'react-bootstrap'
 import { validateAdminSport } from '../../utils/adminValidation'
-import { normalizeFieldErrors } from '../../utils/formErrors'
+import { fieldErrorProps, normalizeFieldErrors } from '../../utils/formErrors'
 
 const EMPTY_FORM = { name: '', objective: '', duration: 60, status: true }
 
@@ -62,18 +62,18 @@ export default function SportFormModal({ initialValue = null, onHide, onSubmit, 
           {requestError && <Alert variant="danger">{requestError}</Alert>}
           <Form.Group className="mb-3" controlId="admin-sport-name">
             <Form.Label>Nombre del deporte</Form.Label>
-            <Form.Control autoFocus isInvalid={Boolean(errors.name)} name="name" onChange={updateField} value={form.name} />
-            <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
+            <Form.Control {...fieldErrorProps(errors.name, 'admin-sport-name-error')} autoFocus isInvalid={Boolean(errors.name)} name="name" onChange={updateField} required value={form.name} />
+            <Form.Control.Feedback id="admin-sport-name-error" type="invalid">{errors.name}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="mb-3" controlId="admin-sport-objective">
             <Form.Label>Objetivo</Form.Label>
-            <Form.Control as="textarea" isInvalid={Boolean(errors.objective)} name="objective" onChange={updateField} rows={3} value={form.objective} />
-            <Form.Control.Feedback type="invalid">{errors.objective}</Form.Control.Feedback>
+            <Form.Control {...fieldErrorProps(errors.objective, 'admin-sport-objective-error')} as="textarea" isInvalid={Boolean(errors.objective)} name="objective" onChange={updateField} required rows={3} value={form.objective} />
+            <Form.Control.Feedback id="admin-sport-objective-error" type="invalid">{errors.objective}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="mb-3" controlId="admin-sport-duration">
             <Form.Label>Duración en minutos</Form.Label>
-            <Form.Control isInvalid={Boolean(errors.duration)} min="1" name="duration" onChange={updateField} type="number" value={form.duration} />
-            <Form.Control.Feedback type="invalid">{errors.duration}</Form.Control.Feedback>
+            <Form.Control {...fieldErrorProps(errors.duration, 'admin-sport-duration-error')} isInvalid={Boolean(errors.duration)} min="1" name="duration" onChange={updateField} required type="number" value={form.duration} />
+            <Form.Control.Feedback id="admin-sport-duration-error" type="invalid">{errors.duration}</Form.Control.Feedback>
           </Form.Group>
           <Form.Check checked={form.status} id="admin-sport-status" label="Activo" name="status" onChange={updateField} type="switch" />
         </Modal.Body>

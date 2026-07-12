@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Alert, Button, Col, Form, Modal, Row, Spinner } from 'react-bootstrap'
 import { Plus, Trash2 } from 'lucide-react'
 import { validateAdminUser } from '../../utils/adminValidation'
-import { normalizeFieldErrors } from '../../utils/formErrors'
+import { fieldErrorProps, normalizeFieldErrors } from '../../utils/formErrors'
 
 const EMPTY_SPORT = { name: '', frequency_per_week: 1 }
 const EMPTY_FORM = {
@@ -92,15 +92,15 @@ export default function UserFormModal({ initialValue = null, onHide, onSubmit, s
             <Col md={6}>
               <Form.Group className="mb-3" controlId="admin-user-name">
                 <Form.Label>Nombre completo</Form.Label>
-                <Form.Control autoFocus isInvalid={Boolean(errors.full_name)} name="full_name" onChange={updateField} value={form.full_name} />
-                <Form.Control.Feedback type="invalid">{errors.full_name}</Form.Control.Feedback>
+                <Form.Control {...fieldErrorProps(errors.full_name, 'admin-user-name-error')} autoFocus isInvalid={Boolean(errors.full_name)} name="full_name" onChange={updateField} required value={form.full_name} />
+                <Form.Control.Feedback id="admin-user-name-error" type="invalid">{errors.full_name}</Form.Control.Feedback>
               </Form.Group>
             </Col>
             <Col md={6}>
               <Form.Group className="mb-3" controlId="admin-user-email">
                 <Form.Label>Correo electrónico</Form.Label>
-                <Form.Control isInvalid={Boolean(errors.email)} name="email" onChange={updateField} type="email" value={form.email} />
-                <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+                <Form.Control {...fieldErrorProps(errors.email, 'admin-user-email-error')} isInvalid={Boolean(errors.email)} name="email" onChange={updateField} required type="email" value={form.email} />
+                <Form.Control.Feedback id="admin-user-email-error" type="invalid">{errors.email}</Form.Control.Feedback>
               </Form.Group>
             </Col>
           </Row>
@@ -108,19 +108,19 @@ export default function UserFormModal({ initialValue = null, onHide, onSubmit, s
             <Col md={6}>
               <Form.Group className="mb-3" controlId="admin-user-role">
                 <Form.Label>Rol</Form.Label>
-                <Form.Select isInvalid={Boolean(errors.role)} name="role" onChange={updateField} value={form.role}>
+                <Form.Select {...fieldErrorProps(errors.role, 'admin-user-role-error')} isInvalid={Boolean(errors.role)} name="role" onChange={updateField} required value={form.role}>
                   <option value="user">Usuario</option>
                   <option value="coach">Entrenador</option>
                   <option value="admin">Administrador</option>
                 </Form.Select>
-                <Form.Control.Feedback type="invalid">{errors.role}</Form.Control.Feedback>
+                <Form.Control.Feedback id="admin-user-role-error" type="invalid">{errors.role}</Form.Control.Feedback>
               </Form.Group>
             </Col>
             <Col md={6}>
               <Form.Group className="mb-3" controlId="admin-user-birth-date">
                 <Form.Label>Fecha de nacimiento</Form.Label>
-                <Form.Control isInvalid={Boolean(errors.birth_date)} name="birth_date" onChange={updateField} type="date" value={form.birth_date} />
-                <Form.Control.Feedback type="invalid">{errors.birth_date}</Form.Control.Feedback>
+                <Form.Control {...fieldErrorProps(errors.birth_date, 'admin-user-birth-date-error')} isInvalid={Boolean(errors.birth_date)} name="birth_date" onChange={updateField} type="date" value={form.birth_date} />
+                <Form.Control.Feedback id="admin-user-birth-date-error" type="invalid">{errors.birth_date}</Form.Control.Feedback>
               </Form.Group>
             </Col>
           </Row>
@@ -128,16 +128,16 @@ export default function UserFormModal({ initialValue = null, onHide, onSubmit, s
             <Col md={6}>
               <Form.Group className="mb-3" controlId="admin-user-password">
                 <Form.Label>{editing ? 'Nueva contraseña' : 'Contraseña'}</Form.Label>
-                <Form.Control autoComplete="new-password" isInvalid={Boolean(errors.password)} name="password" onChange={updateField} type="password" value={form.password} />
-                <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+                <Form.Control {...fieldErrorProps(errors.password, 'admin-user-password-error')} autoComplete="new-password" isInvalid={Boolean(errors.password)} name="password" onChange={updateField} required={!editing} type="password" value={form.password} />
+                <Form.Control.Feedback id="admin-user-password-error" type="invalid">{errors.password}</Form.Control.Feedback>
                 {editing && <Form.Text>Déjala vacía para conservar la contraseña actual.</Form.Text>}
               </Form.Group>
             </Col>
             <Col md={6}>
               <Form.Group className="mb-3" controlId="admin-user-confirm-password">
                 <Form.Label>Confirmar contraseña</Form.Label>
-                <Form.Control autoComplete="new-password" isInvalid={Boolean(errors.confirm_password)} name="confirm_password" onChange={updateField} type="password" value={form.confirm_password} />
-                <Form.Control.Feedback type="invalid">{errors.confirm_password}</Form.Control.Feedback>
+                <Form.Control {...fieldErrorProps(errors.confirm_password, 'admin-user-confirm-password-error')} autoComplete="new-password" isInvalid={Boolean(errors.confirm_password)} name="confirm_password" onChange={updateField} required={!editing} type="password" value={form.confirm_password} />
+                <Form.Control.Feedback id="admin-user-confirm-password-error" type="invalid">{errors.confirm_password}</Form.Control.Feedback>
               </Form.Group>
             </Col>
           </Row>
@@ -151,7 +151,7 @@ export default function UserFormModal({ initialValue = null, onHide, onSubmit, s
             type="switch"
           />
 
-          <fieldset className="sport-fields sport-fields--compact">
+          <fieldset {...fieldErrorProps(errors.sports, 'admin-user-sports-error')} className="sport-fields sport-fields--compact">
             <legend>Deportes del usuario</legend>
             {form.sports.length === 0 && <p className="field-empty-note">Sin deportes registrados.</p>}
             {form.sports.map((sport, index) => (
@@ -169,7 +169,7 @@ export default function UserFormModal({ initialValue = null, onHide, onSubmit, s
                 </Button>
               </div>
             ))}
-            {errors.sports && <div className="invalid-feedback d-block">{errors.sports}</div>}
+            {errors.sports && <div className="invalid-feedback d-block" id="admin-user-sports-error">{errors.sports}</div>}
             <Button className="icon-text-button" onClick={() => setForm((current) => ({ ...current, sports: [...current.sports, { ...EMPTY_SPORT }] }))} type="button" variant="outline-secondary">
               <Plus aria-hidden="true" size={18} /> Agregar deporte
             </Button>

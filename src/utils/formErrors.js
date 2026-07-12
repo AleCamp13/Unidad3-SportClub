@@ -5,3 +5,10 @@ export function normalizeFieldErrors(errors) {
     Array.isArray(message) ? message.join(' ') : String(message),
   ]))
 }
+
+export function fieldErrorProps(error, errorId) {
+  return {
+    'aria-describedby': error ? errorId : undefined,
+    'aria-invalid': Boolean(error),
+  }
+}

@@ -70,4 +70,18 @@ describe('ProfilePage', () => {
     expect(await screen.findByText('Contraseña actualizada correctamente.')).toBeInTheDocument()
     expect(screen.getByLabelText('Contraseña actual')).toHaveValue('')
   })
+
+  it('associates profile validation errors with their fields', async () => {
+    const user = userEvent.setup()
+    renderProfile()
+
+    const birthDate = screen.getByLabelText('Fecha de nacimiento')
+    await user.clear(birthDate)
+    await user.type(birthDate, '2999-01-01')
+    await user.click(screen.getByRole('button', { name: 'Guardar perfil' }))
+
+    expect(birthDate).toHaveAttribute('aria-invalid', 'true')
+    expect(birthDate).toHaveAccessibleDescription('Fecha de nacimiento no puede estar en el futuro.')
+    expect(authService.updateProfile).not.toHaveBeenCalled()
+  })
 })

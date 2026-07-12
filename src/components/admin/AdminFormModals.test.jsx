@@ -16,6 +16,9 @@ describe('UserFormModal', () => {
     expect(await screen.findByText(/nombre completo debe tener al menos/i)).toBeInTheDocument()
     expect(screen.getByText(/correo electrónico válido/i)).toBeInTheDocument()
     expect(screen.getByText(/contraseña debe tener al menos/i)).toBeInTheDocument()
+    expect(screen.getByLabelText('Nombre completo')).toHaveAttribute('aria-invalid', 'true')
+    expect(screen.getByLabelText('Nombre completo'))
+      .toHaveAccessibleDescription(/nombre completo debe tener al menos/i)
     expect(onSubmit).not.toHaveBeenCalled()
   })
 

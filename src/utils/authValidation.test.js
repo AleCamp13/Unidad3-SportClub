@@ -69,4 +69,22 @@ describe('authentication validation', () => {
       confirm_password: 'Las contraseñas no coinciden.',
     }))
   })
+
+  it('rejects impossible and future birth dates with actionable messages', () => {
+    const validInput = {
+      full_name: 'Ana Perez',
+      email: 'ana@example.cl',
+      password: '12345678',
+      confirm_password: '12345678',
+      sports: [{ name: 'Tenis', frequency_per_week: 2 }],
+    }
+
+    expect(validateRegistration({ ...validInput, birth_date: '2026-02-30' }).errors.birth_date)
+      .toBe('Fecha de nacimiento no es una fecha válida.')
+    expect(validateRegistration({ ...validInput, birth_date: '2999-01-01' }).errors.birth_date)
+      .toBe('Fecha de nacimiento no puede estar en el futuro.')
+    expect(validateProfile({
+      full_name: 'Ana Perez', email: 'ana@example.cl', birth_date: '2999-01-01', sports: [],
+    }).errors.birth_date).toBe('Fecha de nacimiento no puede estar en el futuro.')
+  })
 })

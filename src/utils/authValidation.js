@@ -1,4 +1,4 @@
-import { validateForm } from './validators'
+import { validateBirthDate, validateForm } from './validators'
 
 const EMAIL_RULE = { label: 'Correo electrónico', required: true, trim: true, email: true }
 const NAME_RULE = { label: 'Nombre completo', required: true, trim: true, minLength: 3, maxLength: 150 }
@@ -6,9 +6,7 @@ const BIRTH_DATE_RULE = {
   label: 'Fecha de nacimiento',
   required: true,
   trim: true,
-  validate: (value) => /^\d{4}-\d{2}-\d{2}$/.test(value)
-    ? null
-    : 'Fecha de nacimiento debe tener formato AAAA-MM-DD.',
+  validate: validateBirthDate,
 }
 
 function normalizeSports(sports) {

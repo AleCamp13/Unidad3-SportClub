@@ -3,7 +3,7 @@ import { Alert, Button, Form, Modal, Spinner } from 'react-bootstrap'
 import { CalendarDays, Clock3, MapPin, UserRound } from 'lucide-react'
 import { DAY_LABELS, validateReservation } from '../../utils/reservationUtils'
 import { formatTime } from '../../utils/formatters'
-import { normalizeFieldErrors } from '../../utils/formErrors'
+import { fieldErrorProps, normalizeFieldErrors } from '../../utils/formErrors'
 
 function coachLabel(coach) {
   return coach?.full_name || coach?.email || 'Entrenador no disponible'
@@ -61,6 +61,7 @@ export default function ReservationModal({ classInfo, onHide, onSubmit, schedule
           <Form.Group className="mt-3" controlId="reservation-observation">
             <Form.Label>Observación opcional</Form.Label>
             <Form.Control
+              {...fieldErrorProps(errors.observation, 'reservation-observation-error')}
               as="textarea"
               isInvalid={Boolean(errors.observation)}
               maxLength={255}
@@ -71,7 +72,7 @@ export default function ReservationModal({ classInfo, onHide, onSubmit, schedule
               rows={3}
               value={observation}
             />
-            <Form.Control.Feedback type="invalid">{errors.observation}</Form.Control.Feedback>
+            <Form.Control.Feedback id="reservation-observation-error" type="invalid">{errors.observation}</Form.Control.Feedback>
             <Form.Text>{observation.length}/255</Form.Text>
           </Form.Group>
         </Modal.Body>

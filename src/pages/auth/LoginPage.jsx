@@ -3,7 +3,7 @@ import { Alert, Button, Form, Spinner } from 'react-bootstrap'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import { getRoleDashboard } from '../../routes/rolePaths'
-import { normalizeFieldErrors } from '../../utils/formErrors'
+import { fieldErrorProps, normalizeFieldErrors } from '../../utils/formErrors'
 import { validateLogin } from '../../utils/authValidation'
 
 export default function LoginPage() {
@@ -58,27 +58,31 @@ export default function LoginPage() {
         <Form.Group className="mb-3" controlId="login-email">
           <Form.Label>Correo electrónico</Form.Label>
           <Form.Control
+            {...fieldErrorProps(errors.email, 'login-email-error')}
             autoComplete="email"
             autoFocus
             isInvalid={Boolean(errors.email)}
             name="email"
             onChange={updateField}
+            required
             type="email"
             value={form.email}
           />
-          <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+          <Form.Control.Feedback id="login-email-error" type="invalid">{errors.email}</Form.Control.Feedback>
         </Form.Group>
         <Form.Group className="mb-4" controlId="login-password">
           <Form.Label>Contraseña</Form.Label>
           <Form.Control
+            {...fieldErrorProps(errors.password, 'login-password-error')}
             autoComplete="current-password"
             isInvalid={Boolean(errors.password)}
             name="password"
             onChange={updateField}
+            required
             type="password"
             value={form.password}
           />
-          <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+          <Form.Control.Feedback id="login-password-error" type="invalid">{errors.password}</Form.Control.Feedback>
         </Form.Group>
         <Button className="w-100" disabled={isSubmitting} type="submit">
           {isSubmitting && <Spinner aria-hidden="true" className="me-2" size="sm" />}

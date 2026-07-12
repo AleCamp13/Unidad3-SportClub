@@ -32,6 +32,9 @@ describe('LoginPage', () => {
     await user.click(screen.getByRole('button', { name: 'Ingresar' }))
     expect(await screen.findByText('Correo electrónico es obligatorio.')).toBeInTheDocument()
     expect(screen.getByText('Contraseña es obligatorio.')).toBeInTheDocument()
+    expect(screen.getByLabelText('Correo electrónico')).toHaveAttribute('aria-invalid', 'true')
+    expect(screen.getByLabelText('Correo electrónico'))
+      .toHaveAccessibleDescription('Correo electrónico es obligatorio.')
 
     await user.type(screen.getByLabelText('Correo electrónico'), 'user1@demo.cl')
     await user.type(screen.getByLabelText('Contraseña'), '12345678')
