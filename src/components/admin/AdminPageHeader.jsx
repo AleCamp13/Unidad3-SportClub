@@ -1,6 +1,6 @@
 import { Button } from 'react-bootstrap'
 
-export default function AdminPageHeader({ actionLabel, context, description, icon: Icon, onAction, title }) {
+export default function AdminPageHeader({ actionDisabled = false, actionLabel, context, description, icon: Icon, onAction, title }) {
   return (
     <div className="page-heading entity-page-heading">
       <div>
@@ -8,7 +8,7 @@ export default function AdminPageHeader({ actionLabel, context, description, ico
         <h1>{title}</h1>
         <p className="page-description">{description}</p>
       </div>
-      <Button className="icon-text-button" onClick={onAction}>
+      <Button className="icon-text-button" disabled={actionDisabled} onClick={onAction}>
         <Icon aria-hidden="true" size={18} /> {actionLabel}
       </Button>
     </div>

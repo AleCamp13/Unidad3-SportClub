@@ -1,10 +1,16 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import * as authService from '../services/authService'
+import * as assignmentService from '../services/assignmentService'
+import * as roomsService from '../services/roomsService'
+import * as sportsService from '../services/sportsService'
 import * as usersService from '../services/usersService'
 import App from './App'
 
 vi.mock('../services/authService')
+vi.mock('../services/assignmentService')
+vi.mock('../services/roomsService')
+vi.mock('../services/sportsService')
 vi.mock('../services/usersService')
 
 function renderApp(path = '/') {
@@ -63,6 +69,20 @@ describe('application routes', () => {
     expect(screen.getByRole('link', { name: 'Usuarios' })).toHaveAttribute('href', '/admin/users')
     expect(screen.getByRole('link', { name: 'Deportes' })).toHaveAttribute('href', '/admin/sports')
     expect(screen.getByRole('link', { name: 'Salas' })).toHaveAttribute('href', '/admin/rooms')
+  })
+
+  it('exposes assignment and schedule administration to admins', async () => {
+    localStorage.clear()
+    saveSession({ id: 5, full_name: 'Demo Admin 1', email: 'admin1@demo.cl', role: 'admin' })
+    assignmentService.listAssignments.mockResolvedValue([])
+    sportsService.listSports.mockResolvedValue([])
+    roomsService.listRooms.mockResolvedValue([])
+    usersService.listUsers.mockResolvedValue([])
+    renderApp('/admin/assignments')
+
+    expect(await screen.findByRole('heading', { name: 'Asignaciones' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Asignaciones' })).toHaveAttribute('href', '/admin/assignments')
+    expect(screen.getByRole('link', { name: 'Horarios' })).toHaveAttribute('href', '/admin/schedules')
   })
 
   it('renders a Spanish not-found state for unknown routes', async () => {

@@ -1,4 +1,4 @@
-import { Building2, Dumbbell, LayoutDashboard, UserRound, UsersRound } from 'lucide-react'
+import { Building2, CalendarClock, Dumbbell, LayoutDashboard, Link2, UserRound, UsersRound } from 'lucide-react'
 import AppShell from '../components/layout/AppShell'
 import useAuth from '../hooks/useAuth'
 import { getRoleDashboard } from '../routes/rolePaths'
@@ -14,6 +14,8 @@ const ADMIN_NAV_ITEMS = [
   { to: '/admin/users', label: 'Usuarios', icon: UsersRound },
   { to: '/admin/sports', label: 'Deportes', icon: Dumbbell },
   { to: '/admin/rooms', label: 'Salas', icon: Building2 },
+  { to: '/admin/assignments', label: 'Asignaciones', icon: Link2 },
+  { to: '/admin/schedules', label: 'Horarios', icon: CalendarClock },
 ]
 
 function RoleLayout({ role }) {
