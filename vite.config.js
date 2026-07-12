@@ -1,8 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { viteServer } from './src/config/viteServer.js'
 
 export default defineConfig({
   plugins: [react()],
+  server: viteServer,
   test: {
     environment: 'jsdom',
     globals: true,

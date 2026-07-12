@@ -466,6 +466,17 @@ button:focus-visible {
   box-shadow: 0 0 0 3px rgb(46 26 71 / 14%);
 }
 
+.form-select {
+  min-height: 42px;
+  border-color: #b9b6c1;
+  border-radius: var(--radius-sm);
+}
+
+.form-select:focus {
+  border-color: var(--color-club-purple);
+  box-shadow: 0 0 0 3px rgb(46 26 71 / 14%);
+}
+
 .sport-fields {
   min-width: 0;
   padding: 20px 0;
@@ -603,6 +614,157 @@ button:focus-visible {
   object-fit: contain;
 }
 
+.page-description {
+  max-width: 64ch;
+  margin: 9px 0 0;
+  color: var(--color-muted);
+}
+
+.entity-page-heading {
+  align-items: center;
+}
+
+.entity-page-heading > .btn {
+  flex: 0 0 auto;
+}
+
+.entity-table-section {
+  min-height: 220px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 3px solid var(--role-accent);
+}
+
+.entity-table-section > .feedback-state {
+  border-bottom: 1px solid var(--color-border);
+  border-radius: 0;
+}
+
+.entity-table-section .table-responsive {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.entity-table {
+  min-width: 780px;
+  margin: 0;
+  vertical-align: middle;
+}
+
+.entity-table > :not(caption) > * > * {
+  padding: 13px 14px;
+  border-bottom-color: var(--color-border);
+}
+
+.entity-table thead th {
+  color: #433e4c;
+  background: #efeff4;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.entity-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.entity-table td {
+  color: #383440;
+}
+
+.entity-table td strong {
+  color: var(--color-ink);
+}
+
+.actions-column {
+  width: 128px;
+  text-align: center;
+}
+
+.entity-table td:last-child {
+  text-align: center;
+}
+
+.entity-table .btn-group .btn {
+  display: inline-grid;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  place-items: center;
+}
+
+.current-user-label {
+  display: block;
+  margin-top: 2px;
+  color: var(--color-admin);
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.status-badge {
+  min-width: 62px;
+  border-radius: var(--radius-sm);
+}
+
+.inline-data {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.inline-data svg {
+  color: var(--color-muted);
+}
+
+.field-empty-note {
+  margin: 0 0 14px;
+  color: var(--color-muted);
+  font-size: 0.8125rem;
+}
+
+.sport-fields--compact {
+  padding-bottom: 4px;
+  border-bottom: 0;
+}
+
+.modal-content {
+  border: 0;
+  border-top: 4px solid var(--role-accent);
+  border-radius: var(--radius-md);
+  box-shadow: 0 16px 44px rgb(23 19 33 / 22%);
+}
+
+.modal-header,
+.modal-footer {
+  border-color: var(--color-border);
+}
+
+.modal-title {
+  color: var(--color-club-purple);
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.modal-body {
+  max-height: min(70vh, 680px);
+  overflow-y: auto;
+}
+
+.swal2-popup {
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+}
+
+.swal2-title {
+  color: var(--color-club-purple);
+  font-family: var(--font-display);
+  letter-spacing: 0;
+}
+
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
@@ -656,11 +818,13 @@ button:focus-visible {
 
   .app-sidebar nav {
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: thin;
   }
 
   .nav-item {
-    min-width: 88px;
+    min-width: 82px;
     flex-direction: column;
     gap: 2px;
     padding: 5px 12px;
@@ -684,6 +848,23 @@ button:focus-visible {
     align-items: flex-start;
     flex-direction: column;
     gap: 14px;
+  }
+
+  .entity-page-heading > .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .entity-table-section {
+    margin-top: 24px;
+  }
+
+  .modal-dialog {
+    margin: 10px;
+  }
+
+  .modal-body {
+    max-height: calc(100vh - 170px);
   }
 
   .operations-band {

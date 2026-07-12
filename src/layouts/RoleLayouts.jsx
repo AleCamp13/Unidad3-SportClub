@@ -1,4 +1,4 @@
-import { LayoutDashboard, UserRound } from 'lucide-react'
+import { Building2, Dumbbell, LayoutDashboard, UserRound, UsersRound } from 'lucide-react'
 import AppShell from '../components/layout/AppShell'
 import useAuth from '../hooks/useAuth'
 import { getRoleDashboard } from '../routes/rolePaths'
@@ -9,11 +9,18 @@ const ROLE_CONFIG = {
   user: { shellRole: 'member', label: 'Membresía' },
 }
 
+const ADMIN_NAV_ITEMS = [
+  { to: '/admin/dashboard', label: 'Panel', icon: LayoutDashboard },
+  { to: '/admin/users', label: 'Usuarios', icon: UsersRound },
+  { to: '/admin/sports', label: 'Deportes', icon: Dumbbell },
+  { to: '/admin/rooms', label: 'Salas', icon: Building2 },
+]
+
 function RoleLayout({ role }) {
   const { user, logout } = useAuth()
   const config = ROLE_CONFIG[role]
   const navItems = [
-    { to: getRoleDashboard(role), label: 'Panel', icon: LayoutDashboard },
+    ...(role === 'admin' ? ADMIN_NAV_ITEMS : [{ to: getRoleDashboard(role), label: 'Panel', icon: LayoutDashboard }]),
     { to: '/profile', label: 'Mi perfil', icon: UserRound },
   ]
 

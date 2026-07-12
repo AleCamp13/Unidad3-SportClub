@@ -5,6 +5,9 @@ import PublicLayout from '../layouts/PublicLayout'
 import { AdminLayout, CoachLayout, CurrentRoleLayout, UserLayout } from '../layouts/RoleLayouts'
 import LoginPage from '../pages/auth/LoginPage'
 import RegisterPage from '../pages/auth/RegisterPage'
+import AdminRoomsPage from '../pages/admin/AdminRoomsPage'
+import AdminSportsPage from '../pages/admin/AdminSportsPage'
+import AdminUsersPage from '../pages/admin/AdminUsersPage'
 import RoleDashboardPage from '../pages/dashboard/RoleDashboardPage'
 import ProfilePage from '../pages/profile/ProfilePage'
 import NotFoundPage from '../pages/system/NotFoundPage'
@@ -55,6 +58,9 @@ export default function AppRouter() {
 
       <Route element={<ProtectedRoleLayout layout={<AdminLayout />} role="admin" />}>
         <Route path="/admin/dashboard" element={<RoleDashboardPage role="admin" />} />
+        <Route path="/admin/users" element={<AdminUsersPage />} />
+        <Route path="/admin/sports" element={<AdminSportsPage />} />
+        <Route path="/admin/rooms" element={<AdminRoomsPage />} />
       </Route>
       <Route element={<ProtectedRoleLayout layout={<CoachLayout />} role="coach" />}>
         <Route path="/coach/dashboard" element={<RoleDashboardPage role="coach" />} />

@@ -1,9 +1,11 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import * as authService from '../services/authService'
+import * as usersService from '../services/usersService'
 import App from './App'
 
 vi.mock('../services/authService')
+vi.mock('../services/usersService')
 
 function renderApp(path = '/') {
   return render(
@@ -49,6 +51,18 @@ describe('application routes', () => {
 
     expect(await screen.findByRole('heading', { name: 'Acceso no autorizado' })).toBeInTheDocument()
     expect(screen.queryByText('Panel de administración')).not.toBeInTheDocument()
+  })
+
+  it('exposes the administrative CRUD routes in the admin navigation', async () => {
+    localStorage.clear()
+    saveSession({ id: 5, full_name: 'Demo Admin 1', email: 'admin1@demo.cl', role: 'admin' })
+    usersService.listUsers.mockResolvedValue([])
+    renderApp('/admin/users')
+
+    expect(await screen.findByRole('heading', { name: 'Usuarios' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Usuarios' })).toHaveAttribute('href', '/admin/users')
+    expect(screen.getByRole('link', { name: 'Deportes' })).toHaveAttribute('href', '/admin/sports')
+    expect(screen.getByRole('link', { name: 'Salas' })).toHaveAttribute('href', '/admin/rooms')
   })
 
   it('renders a Spanish not-found state for unknown routes', async () => {

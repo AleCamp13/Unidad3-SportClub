@@ -10,6 +10,7 @@ module.exports = {
       files: ['**/*.test.{js,jsx}', 'src/test/**/*.js'],
       globals: {
         afterEach: 'readonly',
+        beforeEach: 'readonly',
         describe: 'readonly',
         expect: 'readonly',
         it: 'readonly',
