@@ -29,7 +29,7 @@ Fecha de revision local: 12 de julio de 2026.
 - [x] Contrastes principales: 5.12:1 a 17.03:1, todos sobre el minimo AA.
 - [x] Detector de anti-patrones visuales: cero advertencias despues del pulido.
 - [x] Build Vite ejecutado despues del pulido de estilos.
-- [x] Suite completa: 27 archivos y 104 pruebas aprobadas; ESLint y build limpios.
+- [x] Suite completa previa al despliegue: 28 archivos y 105 pruebas aprobadas; ESLint y build limpios.
 
 ## Verificacion integrada local
 
