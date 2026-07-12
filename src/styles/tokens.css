@@ -1,0 +1,34 @@
+:root {
+  --color-ink: #171321;
+  --color-club-purple: #2e1a47;
+  --color-club-purple-deep: #211132;
+  --color-gold: #f2b705;
+  --color-paper: #f6f7fb;
+  --color-surface: #ffffff;
+  --color-border: #d9dbe5;
+  --color-muted: #5d5968;
+  --color-admin: #c83a30;
+  --color-coach: #187a60;
+  --color-member: #2764d7;
+  --color-danger-soft: #fff1f0;
+  --role-accent: var(--color-gold);
+
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'Manrope', sans-serif;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --shadow-header: 0 2px 8px rgb(23 19 33 / 14%);
+
+  --z-sidebar: 20;
+  --z-header: 30;
+  --z-dropdown: 40;
+  --z-modal-backdrop: 50;
+  --z-modal: 60;
+  --z-toast: 70;
+  --z-tooltip: 80;
+}
+
+[data-role='admin'] { --role-accent: var(--color-admin); }
+[data-role='coach'] { --role-accent: var(--color-coach); }
+[data-role='member'] { --role-accent: var(--color-member); }
