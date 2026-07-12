@@ -1,35 +1,61 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
+import * as authService from '../services/authService'
 import App from './App'
 
-describe('App shell', () => {
-  it('renders the operational home inside accessible navigation landmarks', () => {
-    render(
-      <MemoryRouter
-        future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
-        initialEntries={['/']}
-      >
-        <App />
-      </MemoryRouter>,
-    )
+vi.mock('../services/authService')
 
-    expect(screen.getByRole('banner')).toBeInTheDocument()
-    expect(screen.getByRole('navigation', { name: 'Navegación principal' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Centro de operaciones' })).toBeInTheDocument()
-    expect(screen.getByRole('img', { name: 'SportClub' })).toHaveAttribute('src', '/assets/img/logo.png')
+function renderApp(path = '/') {
+  return render(
+    <MemoryRouter
+      future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
+      initialEntries={[path]}
+    >
+      <App />
+    </MemoryRouter>,
+  )
+}
+
+function saveSession(user) {
+  localStorage.setItem('sportclub_token', 'saved-token')
+  localStorage.setItem('sportclub_user', JSON.stringify(user))
+  authService.getCurrentUser.mockResolvedValue(user)
+}
+
+describe('application routes', () => {
+  it('redirects unauthenticated root and protected routes to login', async () => {
+    localStorage.clear()
+    renderApp('/user/dashboard')
+
+    expect(await screen.findByRole('heading', { name: 'Iniciar sesión' })).toBeInTheDocument()
+    expect(screen.queryByText('Panel de usuario')).not.toBeInTheDocument()
   })
 
-  it('renders a Spanish not-found state for unknown routes', () => {
-    render(
-      <MemoryRouter
-        future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
-        initialEntries={['/ruta-inexistente']}
-      >
-        <App />
-      </MemoryRouter>,
-    )
+  it('restores the session and redirects root to the matching role dashboard', async () => {
+    localStorage.clear()
+    saveSession({ id: 1, full_name: 'Demo Admin 1', email: 'admin1@demo.cl', role: 'admin' })
+    renderApp('/')
 
-    expect(screen.getByRole('heading', { name: 'Página no encontrada' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Panel de administración' })).toBeInTheDocument()
+    expect(screen.getByRole('navigation', { name: 'Navegación principal' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Mi perfil' })).toHaveAttribute('href', '/profile')
+    expect(screen.getByText('Demo Admin 1')).toBeInTheDocument()
+  })
+
+  it('redirects an authenticated user away from another role dashboard', async () => {
+    localStorage.clear()
+    saveSession({ id: 3, full_name: 'Demo User 1', email: 'user1@demo.cl', role: 'user' })
+    renderApp('/admin/dashboard')
+
+    expect(await screen.findByRole('heading', { name: 'Acceso no autorizado' })).toBeInTheDocument()
+    expect(screen.queryByText('Panel de administración')).not.toBeInTheDocument()
+  })
+
+  it('renders a Spanish not-found state for unknown routes', async () => {
+    localStorage.clear()
+    renderApp('/ruta-inexistente')
+
+    expect(await screen.findByRole('heading', { name: 'Página no encontrada' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Volver al inicio' })).toHaveAttribute('href', '/')
   })
 })

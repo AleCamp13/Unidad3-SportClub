@@ -1,11 +1,7 @@
-import { Home, LogIn } from 'lucide-react'
+import { LogOut, UserRound } from 'lucide-react'
 import { NavLink, Outlet } from 'react-router-dom'
 
-const DEFAULT_NAV_ITEMS = [
-  { to: '/', label: 'Inicio', icon: Home },
-]
-
-export default function AppShell({ role = 'guest', roleLabel = 'Acceso general', navItems = DEFAULT_NAV_ITEMS }) {
+export default function AppShell({ role, roleLabel, navItems, user, onLogout }) {
   return (
     <div className="app-shell" data-role={role}>
       <header className="app-header">
@@ -15,11 +11,16 @@ export default function AppShell({ role = 'guest', roleLabel = 'Acceso general',
         <div className="role-lane" aria-label={`Perfil: ${roleLabel}`}>
           <span className="role-lane__marker" aria-hidden="true" />
           <span>{roleLabel}</span>
+          <strong>{user.full_name}</strong>
         </div>
-        <button className="header-action" type="button" aria-label="Iniciar sesión" disabled>
-          <LogIn aria-hidden="true" size={20} />
-          <span>Ingresar</span>
-        </button>
+        <div className="header-actions">
+          <NavLink aria-label="Abrir mi perfil" className="header-icon-button" title="Mi perfil" to="/profile">
+            <UserRound aria-hidden="true" size={20} />
+          </NavLink>
+          <button aria-label="Cerrar sesión" className="header-icon-button" onClick={onLogout} title="Cerrar sesión" type="button">
+            <LogOut aria-hidden="true" size={20} />
+          </button>
+        </div>
       </header>
 
       <div className="court-line" aria-hidden="true" />

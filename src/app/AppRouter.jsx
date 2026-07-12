@@ -1,53 +1,74 @@
-import { Link, Route, Routes } from 'react-router-dom'
-import { CalendarDays, Clock3 } from 'lucide-react'
-import AppShell from '../components/layout/AppShell'
+import { LoaderCircle } from 'lucide-react'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import useAuth from '../hooks/useAuth'
+import PublicLayout from '../layouts/PublicLayout'
+import { AdminLayout, CoachLayout, CurrentRoleLayout, UserLayout } from '../layouts/RoleLayouts'
+import LoginPage from '../pages/auth/LoginPage'
+import RegisterPage from '../pages/auth/RegisterPage'
+import RoleDashboardPage from '../pages/dashboard/RoleDashboardPage'
+import ProfilePage from '../pages/profile/ProfilePage'
+import NotFoundPage from '../pages/system/NotFoundPage'
+import UnauthorizedPage from '../pages/system/UnauthorizedPage'
+import ProtectedRoute from '../routes/ProtectedRoute'
+import RoleRoute from '../routes/RoleRoute'
+import { getRoleDashboard } from '../routes/rolePaths'
 
-function HomePage() {
+function SessionLoader() {
   return (
-    <div className="workspace">
-      <div className="page-heading">
-        <div>
-          <p className="page-context">Vista general</p>
-          <h1>Centro de operaciones</h1>
-        </div>
-        <span className="workspace-status">Sistema disponible</span>
-      </div>
-
-      <section className="operations-band" aria-labelledby="activity-title">
-        <div className="operations-band__heading">
-          <CalendarDays aria-hidden="true" size={22} />
-          <div>
-            <h2 id="activity-title">Actividad del club</h2>
-            <p>La jornada se mostrará al iniciar sesión.</p>
-          </div>
-        </div>
-        <div className="operations-band__empty">
-          <Clock3 aria-hidden="true" size={24} />
-          <span>Sin actividad disponible</span>
-        </div>
-      </section>
+    <div className="page-loader" role="status">
+      <LoaderCircle className="page-loader__icon" aria-hidden="true" size={28} />
+      <span>Restaurando sesión</span>
     </div>
   )
 }
 
-function NotFoundPage() {
+function RootRedirect() {
+  const { user, isRestoring } = useAuth()
+  if (isRestoring) return <SessionLoader />
+  return <Navigate replace to={user ? getRoleDashboard(user.role) : '/login'} />
+}
+
+function PublicRoute({ children }) {
+  const { user, isRestoring } = useAuth()
+  if (isRestoring) return <SessionLoader />
+  if (user) return <Navigate replace to={getRoleDashboard(user.role)} />
+  return children
+}
+
+function ProtectedRoleLayout({ role, layout }) {
   return (
-    <div className="workspace not-found">
-      <p className="not-found__code">404</p>
-      <h1>Página no encontrada</h1>
-      <p>La dirección ingresada no corresponde a una sección disponible.</p>
-      <Link className="btn btn-primary" to="/">Volver al inicio</Link>
-    </div>
+    <ProtectedRoute>
+      <RoleRoute allowedRoles={[role]}>{layout}</RoleRoute>
+    </ProtectedRoute>
   )
 }
 
 export default function AppRouter() {
   return (
     <Routes>
-      <Route element={<AppShell />}>
-        <Route index element={<HomePage />} />
-        <Route path="*" element={<NotFoundPage />} />
+      <Route path="/" element={<RootRedirect />} />
+
+      <Route element={<PublicRoute><PublicLayout /></PublicRoute>}>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Route>
+
+      <Route element={<ProtectedRoleLayout layout={<AdminLayout />} role="admin" />}>
+        <Route path="/admin/dashboard" element={<RoleDashboardPage role="admin" />} />
+      </Route>
+      <Route element={<ProtectedRoleLayout layout={<CoachLayout />} role="coach" />}>
+        <Route path="/coach/dashboard" element={<RoleDashboardPage role="coach" />} />
+      </Route>
+      <Route element={<ProtectedRoleLayout layout={<UserLayout />} role="user" />}>
+        <Route path="/user/dashboard" element={<RoleDashboardPage role="user" />} />
+      </Route>
+
+      <Route element={<ProtectedRoute><CurrentRoleLayout /></ProtectedRoute>}>
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/unauthorized" element={<UnauthorizedPage />} />
+      </Route>
+
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )
 }
