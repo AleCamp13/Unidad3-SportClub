@@ -41,13 +41,22 @@ Fecha de revision local: 12 de julio de 2026.
 - [x] Solicitud duplicada rechazada con HTTP 409 sin cambiar datos.
 - [ ] Recorrido visual con capturas de escritorio y movil. El controlador visual no estuvo disponible en esta sesion.
 
+## Verificacion AWS
+
+- [x] Instancia EC2 Debian 13 auditada antes de instalar servicios.
+- [x] Frontend servido por Nginx y backend oficial con MariaDB mediante Docker Compose.
+- [x] Portada, `/login` y refresh directo de `/user/classes` responden HTTP 200.
+- [x] CSS y JavaScript de produccion responden HTTP 200 desde la Elastic IP.
+- [x] Login y endpoint protegido verificados con HTTP 200 para admin, coach y user.
+- [x] Docker y Nginx activos y habilitados; MariaDB healthy y reinicio de contenedores en `always`.
+
 ## Publicacion
 
 - [x] Crear repositorio publico `AleCamp13/Unidad3-SportClub`.
 - [x] Publicar y revisar `main` en GitHub.
-- [x] Registrar evidencia de 10 commits, rama `main` y rama `feature/unidad3-sportclub` en el arbol remoto.
-- [ ] Auditar instancia EC2 antes de modificarla.
-- [ ] Desplegar frontend y backend oficial en AWS.
-- [ ] Verificar URL publica, refresh de rutas y `/api` en produccion.
+- [x] Registrar evidencia de 12 commits, rama `main` y rama `feature/unidad3-sportclub` en el arbol remoto.
+- [x] Auditar instancia EC2 antes de modificarla.
+- [x] Desplegar frontend y backend oficial en AWS.
+- [x] Verificar [URL publica](http://100.52.6.119/), refresh de rutas y `/api` en produccion.
 
 No se debe marcar una casilla pendiente hasta contar con evidencia directa.

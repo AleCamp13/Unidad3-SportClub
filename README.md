@@ -7,7 +7,7 @@ SPA desarrollada con React para la evaluacion individual N33 de Frontend. Consum
 - Funcionalidad frontend: implementada para administrador, entrenador y socio.
 - API local: verificada con el backend oficial sin cambios.
 - Publicacion GitHub: disponible en [AleCamp13/Unidad3-SportClub](https://github.com/AleCamp13/Unidad3-SportClub), con `main`, rama de desarrollo e historial de commits.
-- AWS: pendiente de auditar y desplegar en la instancia EC2 del estudiante.
+- AWS: [aplicacion publicada en EC2](http://100.52.6.119/) con Debian 13, Nginx, Docker y Elastic IP.
 
 ## Tecnologias
 
