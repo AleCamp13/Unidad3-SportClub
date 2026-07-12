@@ -38,4 +38,17 @@ describe('validateForm', () => {
       endTime: 'La hora de término debe ser posterior al inicio.',
     })
   })
+
+  it('composes trimming and numeric conversion while preserving required whitespace', () => {
+    const result = validateForm({ capacity: '   ', duration: ' 45 ' }, {
+      capacity: { label: 'Capacidad', required: true, trim: true, number: true },
+      duration: { label: 'Duración', trim: true, number: true },
+    })
+
+    expect(result).toEqual({
+      isValid: false,
+      errors: { capacity: 'Capacidad es obligatorio.' },
+      data: { capacity: '', duration: 45 },
+    })
+  })
 })

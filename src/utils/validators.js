@@ -1,9 +1,12 @@
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 function normalizeValue(value, rules) {
-  if (rules.trim && typeof value === 'string') return value.trim()
-  if (rules.number && value !== '' && value != null) return Number(value)
-  return value
+  let normalizedValue = value
+  if (rules.trim && typeof normalizedValue === 'string') normalizedValue = normalizedValue.trim()
+  if (rules.number && normalizedValue !== '' && normalizedValue != null) {
+    normalizedValue = Number(normalizedValue)
+  }
+  return normalizedValue
 }
 
 function validateValue(value, rules, label, data) {

@@ -43,6 +43,21 @@ describe('apiRequest', () => {
     })
   })
 
+  it('throws an ApiError when a successful response envelope reports failure', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify({
+      ok: false,
+      message: 'La operación fue rechazada',
+      errors: { sport: ['El deporte está inactivo'] },
+    }), { status: 200, headers: { 'Content-Type': 'application/json' } })))
+
+    await expect(apiRequest('/reservations')).rejects.toMatchObject({
+      name: 'ApiError',
+      status: 200,
+      message: 'La operación fue rechazada',
+      errors: { sport: ['El deporte está inactivo'] },
+    })
+  })
+
   it('normalizes network failures as ApiError instances', async () => {
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new TypeError('Failed to fetch')))
 

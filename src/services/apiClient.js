@@ -50,14 +50,14 @@ export async function apiRequest(path, options = {}) {
 
   const payload = await readResponse(response)
 
-  if (!response.ok) {
+  if (!response.ok || payload?.ok === false) {
     const message = typeof payload === 'string'
       ? payload
       : payload?.message || 'La solicitud no pudo completarse.'
 
     throw new ApiError(message, {
       status: response.status,
-      errors: typeof payload === 'object' ? payload?.errors ?? null : null,
+      errors: typeof payload === 'object' ? payload?.errors ?? payload?.data ?? null : null,
     })
   }
 
