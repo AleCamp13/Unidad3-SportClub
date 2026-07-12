@@ -30,6 +30,7 @@ Fecha de revision local: 12 de julio de 2026.
 - [x] Detector de anti-patrones visuales: cero advertencias despues del pulido.
 - [x] Build Vite ejecutado despues del pulido de estilos.
 - [x] Suite completa previa al despliegue: 28 archivos y 105 pruebas aprobadas; ESLint y build limpios.
+- [x] `npm audit --omit=dev`: cero vulnerabilidades en dependencias de produccion.
 
 ## Verificacion integrada local
 

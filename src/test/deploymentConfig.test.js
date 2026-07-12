@@ -19,5 +19,8 @@ describe('production deployment configuration', () => {
     expect(nginx).toContain('try_files $uri $uri/ /index.html;')
     expect(nginx).toContain('location /api/')
     expect(nginx).toContain('proxy_pass http://127.0.0.1:3000/api/;')
+
+    const viteConfig = readFileSync(path.join(projectRoot, 'vite.config.js'), 'utf8')
+    expect(viteConfig).toContain("'**/.worktrees/**'")
   })
 })
