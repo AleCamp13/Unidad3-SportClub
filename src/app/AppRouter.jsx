@@ -11,6 +11,14 @@ import AdminUsersPage from '../pages/admin/AdminUsersPage'
 import AdminAssignmentsPage from '../pages/admin/AdminAssignmentsPage'
 import AdminSchedulesPage from '../pages/admin/AdminSchedulesPage'
 import RoleDashboardPage from '../pages/dashboard/RoleDashboardPage'
+import CoachClassesPage from '../pages/coach/CoachClassesPage'
+import CoachDashboardPage from '../pages/coach/CoachDashboardPage'
+import CoachRoomsPage from '../pages/coach/CoachRoomsPage'
+import CoachSchedulesPage from '../pages/coach/CoachSchedulesPage'
+import MemberClassDetailPage from '../pages/member/MemberClassDetailPage'
+import MemberClassesPage from '../pages/member/MemberClassesPage'
+import MemberDashboardPage from '../pages/member/MemberDashboardPage'
+import MemberReservationsPage from '../pages/member/MemberReservationsPage'
 import ProfilePage from '../pages/profile/ProfilePage'
 import NotFoundPage from '../pages/system/NotFoundPage'
 import UnauthorizedPage from '../pages/system/UnauthorizedPage'
@@ -67,10 +75,16 @@ export default function AppRouter() {
         <Route path="/admin/schedules" element={<AdminSchedulesPage />} />
       </Route>
       <Route element={<ProtectedRoleLayout layout={<CoachLayout />} role="coach" />}>
-        <Route path="/coach/dashboard" element={<RoleDashboardPage role="coach" />} />
+        <Route path="/coach/dashboard" element={<CoachDashboardPage />} />
+        <Route path="/coach/classes" element={<CoachClassesPage />} />
+        <Route path="/coach/schedules" element={<CoachSchedulesPage />} />
+        <Route path="/coach/rooms" element={<CoachRoomsPage />} />
       </Route>
       <Route element={<ProtectedRoleLayout layout={<UserLayout />} role="user" />}>
-        <Route path="/user/dashboard" element={<RoleDashboardPage role="user" />} />
+        <Route path="/user/dashboard" element={<MemberDashboardPage />} />
+        <Route path="/user/classes" element={<MemberClassesPage />} />
+        <Route path="/user/classes/:id" element={<MemberClassDetailPage />} />
+        <Route path="/user/reservations" element={<MemberReservationsPage />} />
       </Route>
 
       <Route element={<ProtectedRoute><CurrentRoleLayout /></ProtectedRoute>}>

@@ -1,7 +1,6 @@
-import { Building2, CalendarClock, Dumbbell, LayoutDashboard, Link2, UserRound, UsersRound } from 'lucide-react'
+import { Building2, CalendarCheck2, CalendarClock, Dumbbell, LayoutDashboard, Link2, UserRound, UsersRound } from 'lucide-react'
 import AppShell from '../components/layout/AppShell'
 import useAuth from '../hooks/useAuth'
-import { getRoleDashboard } from '../routes/rolePaths'
 
 const ROLE_CONFIG = {
   admin: { shellRole: 'admin', label: 'Administración' },
@@ -18,11 +17,25 @@ const ADMIN_NAV_ITEMS = [
   { to: '/admin/schedules', label: 'Horarios', icon: CalendarClock },
 ]
 
+const COACH_NAV_ITEMS = [
+  { to: '/coach/dashboard', label: 'Panel', icon: LayoutDashboard },
+  { to: '/coach/classes', label: 'Mis clases', icon: Dumbbell },
+  { to: '/coach/schedules', label: 'Mi horario', icon: CalendarClock },
+  { to: '/coach/rooms', label: 'Mis salas', icon: Building2 },
+]
+
+const USER_NAV_ITEMS = [
+  { to: '/user/dashboard', label: 'Panel', icon: LayoutDashboard },
+  { to: '/user/classes', label: 'Clases', icon: Dumbbell },
+  { to: '/user/reservations', label: 'Mis reservas', icon: CalendarCheck2 },
+]
+
 function RoleLayout({ role }) {
   const { user, logout } = useAuth()
   const config = ROLE_CONFIG[role]
+  const roleItems = role === 'admin' ? ADMIN_NAV_ITEMS : role === 'coach' ? COACH_NAV_ITEMS : USER_NAV_ITEMS
   const navItems = [
-    ...(role === 'admin' ? ADMIN_NAV_ITEMS : [{ to: getRoleDashboard(role), label: 'Panel', icon: LayoutDashboard }]),
+    ...roleItems,
     { to: '/profile', label: 'Mi perfil', icon: UserRound },
   ]
 

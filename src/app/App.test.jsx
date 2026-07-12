@@ -2,6 +2,9 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import * as authService from '../services/authService'
 import * as assignmentService from '../services/assignmentService'
+import * as coachService from '../services/coachService'
+import * as memberService from '../services/memberService'
+import * as reservationService from '../services/reservationService'
 import * as roomsService from '../services/roomsService'
 import * as sportsService from '../services/sportsService'
 import * as usersService from '../services/usersService'
@@ -9,6 +12,9 @@ import App from './App'
 
 vi.mock('../services/authService')
 vi.mock('../services/assignmentService')
+vi.mock('../services/coachService')
+vi.mock('../services/memberService')
+vi.mock('../services/reservationService')
 vi.mock('../services/roomsService')
 vi.mock('../services/sportsService')
 vi.mock('../services/usersService')
@@ -83,6 +89,34 @@ describe('application routes', () => {
     expect(await screen.findByRole('heading', { name: 'Asignaciones' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Asignaciones' })).toHaveAttribute('href', '/admin/assignments')
     expect(screen.getByRole('link', { name: 'Horarios' })).toHaveAttribute('href', '/admin/schedules')
+  })
+
+  it('exposes classes and reservations only in member navigation', async () => {
+    localStorage.clear()
+    saveSession({ id: 1, full_name: 'Demo User 1', email: 'user1@demo.cl', role: 'user' })
+    memberService.getAvailableClasses.mockResolvedValue([])
+    memberService.getAvailableSports.mockResolvedValue([])
+    memberService.getAvailableRooms.mockResolvedValue([])
+    reservationService.getMyReservations.mockResolvedValue([])
+    renderApp('/user/classes')
+
+    expect(await screen.findByRole('heading', { name: 'Clases disponibles' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Clases' })).toHaveAttribute('href', '/user/classes')
+    expect(screen.getByRole('link', { name: 'Mis reservas' })).toHaveAttribute('href', '/user/reservations')
+    expect(screen.queryByRole('link', { name: 'Usuarios' })).not.toBeInTheDocument()
+  })
+
+  it('exposes assigned work only in coach navigation', async () => {
+    localStorage.clear()
+    saveSession({ id: 4, full_name: 'Demo Coach 2', email: 'coach2@demo.cl', role: 'coach' })
+    coachService.getCoachSchedules.mockResolvedValue([])
+    renderApp('/coach/schedules')
+
+    expect(await screen.findByRole('heading', { name: 'Mi horario' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Mis clases' })).toHaveAttribute('href', '/coach/classes')
+    expect(screen.getByRole('link', { name: 'Mi horario' })).toHaveAttribute('href', '/coach/schedules')
+    expect(screen.getByRole('link', { name: 'Mis salas' })).toHaveAttribute('href', '/coach/rooms')
+    expect(screen.queryByRole('link', { name: 'Mis reservas' })).not.toBeInTheDocument()
   })
 
   it('renders a Spanish not-found state for unknown routes', async () => {
