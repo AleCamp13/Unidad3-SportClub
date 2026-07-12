@@ -43,9 +43,9 @@ Fecha de revision local: 12 de julio de 2026.
 
 ## Publicacion
 
-- [ ] Crear repositorio publico `AleCamp13/Unidad3-SportClub`.
-- [ ] Publicar y revisar `main` en GitHub.
-- [ ] Registrar evidencia de commits y arbol remoto.
+- [x] Crear repositorio publico `AleCamp13/Unidad3-SportClub`.
+- [x] Publicar y revisar `main` en GitHub.
+- [x] Registrar evidencia de 10 commits, rama `main` y rama `feature/unidad3-sportclub` en el arbol remoto.
 - [ ] Auditar instancia EC2 antes de modificarla.
 - [ ] Desplegar frontend y backend oficial en AWS.
 - [ ] Verificar URL publica, refresh de rutas y `/api` en produccion.
