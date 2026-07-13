@@ -50,6 +50,7 @@ Fecha de revision local: 12 de julio de 2026.
 - [x] Frontend servido por Nginx y backend oficial con MariaDB mediante Docker Compose.
 - [x] Portada, `/login` y refresh directo de `/user/classes` responden HTTP 200.
 - [x] CSS y JavaScript de produccion responden HTTP 200 desde la Elastic IP.
+- [x] SportClub Pro y sus seis imagenes WebP verificados en escritorio y movil tras el despliegue final.
 - [x] Login y endpoint protegido verificados con HTTP 200 para admin, coach y user.
 - [x] Docker y Nginx activos y habilitados; MariaDB healthy y reinicio de contenedores en `always`.
 
