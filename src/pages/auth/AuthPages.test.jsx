@@ -29,6 +29,8 @@ describe('LoginPage', () => {
     useAuth.mockReturnValue({ login })
     renderPage('/login', <LoginPage />)
 
+    expect(screen.getByText('Tu cuenta conecta cada entrenamiento con la operación real del club.')).toBeInTheDocument()
+
     await user.click(screen.getByRole('button', { name: 'Ingresar' }))
     expect(await screen.findByText('Correo electrónico es obligatorio.')).toBeInTheDocument()
     expect(screen.getByText('Contraseña es obligatorio.')).toBeInTheDocument()
@@ -51,6 +53,8 @@ describe('RegisterPage', () => {
     const register = vi.fn().mockResolvedValue({ id: 9, role: 'user' })
     useAuth.mockReturnValue({ register })
     renderPage('/register', <RegisterPage />)
+
+    expect(screen.getByText('Completa tus datos personales y deportivos en un solo paso.')).toBeInTheDocument()
 
     await user.type(screen.getByLabelText('Nombre completo'), 'Ana Perez')
     await user.type(screen.getByLabelText('Correo electrónico'), 'ANA@EXAMPLE.CL')

@@ -6,13 +6,14 @@ export default function AppShell({ role, roleLabel, navItems, user, onLogout }) 
     <div className="app-shell" data-role={role}>
       <a className="skip-link" href="#main-content">Saltar al contenido principal</a>
       <header className="app-header">
-        <NavLink className="brand" to="/" aria-label="SportClub, ir al inicio">
+        <NavLink className="brand" to="/" aria-label="SportClub Pro, ir al inicio">
           <img src="/assets/img/logo.png" alt="SportClub" />
+          <span aria-hidden="true" className="brand__edition">Pro</span>
         </NavLink>
-        <div className="role-lane" aria-label={`Perfil: ${roleLabel}`}>
+        <div className="role-lane" aria-label={`Cuenta activa: ${user.full_name}, perfil ${roleLabel}`}>
           <span className="role-lane__marker" aria-hidden="true" />
-          <span>{roleLabel}</span>
-          <strong>{user.full_name}</strong>
+          <span className="role-lane__label">{roleLabel}</span>
+          <strong className="role-lane__user">{user.full_name}</strong>
         </div>
         <div className="header-actions">
           <NavLink aria-label="Abrir mi perfil" className="header-icon-button" title="Mi perfil" to="/profile">
@@ -40,7 +41,10 @@ export default function AppShell({ role, roleLabel, navItems, user, onLogout }) 
             </NavLink>
           ))}
         </nav>
-        <p className="app-sidebar__meta">Gestión deportiva</p>
+        <div className="app-sidebar__meta">
+          <strong>SportClub Pro</strong>
+          <span>Gestion deportiva</span>
+        </div>
       </aside>
 
       <main className="app-main" id="main-content" tabIndex="-1">

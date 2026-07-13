@@ -48,6 +48,9 @@ describe('CoachClassesPage', () => {
     render(<CoachClassesPage />)
 
     expect(await screen.findByRole('heading', { name: 'Mis clases' })).toBeInTheDocument()
+    expect(screen.queryByRole('img', { name: 'Clase de Yoga en SportClub' })).not.toBeInTheDocument()
+    expect(document.querySelector('.coach-class__media img'))
+      .toHaveAttribute('src', '/assets/sports/yoga.webp')
     expect(screen.getByText('Yoga')).toBeInTheDocument()
     expect(screen.getByText('Sala Yoga')).toBeInTheDocument()
     expect(screen.getByText('Martes · 09:00 - 10:00')).toBeInTheDocument()

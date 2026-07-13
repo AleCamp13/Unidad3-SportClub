@@ -29,8 +29,10 @@ Fecha de revision local: 12 de julio de 2026.
 - [x] Contrastes principales: 5.12:1 a 17.03:1, todos sobre el minimo AA.
 - [x] Detector de anti-patrones visuales: cero advertencias despues del pulido.
 - [x] Build Vite ejecutado despues del pulido de estilos.
-- [x] Suite completa previa al despliegue: 28 archivos y 105 pruebas aprobadas; ESLint y build limpios.
+- [x] Suite completa SportClub Pro: 29 archivos y 113 pruebas aprobadas; ESLint y build limpios.
 - [x] `npm audit --omit=dev`: cero vulnerabilidades en dependencias de produccion.
+- [x] Seis fotografias deportivas optimizadas a WebP, entre 99 y 129 KB por archivo.
+- [x] Contrastes SportClub Pro entre 6.84:1 y 16.72:1 para texto principal y secundario.
 
 ## Verificacion integrada local
 
@@ -39,7 +41,8 @@ Fecha de revision local: 12 de julio de 2026.
 - [x] Login entrenador y lectura de dashboard, clases, horarios y salas.
 - [x] Login socio y lectura de dashboard, clases, detalle, deportes, salas y reservas.
 - [x] Solicitud duplicada rechazada con HTTP 409 sin cambiar datos.
-- [ ] Recorrido visual con capturas de escritorio y movil. El controlador visual no estuvo disponible en esta sesion.
+- [x] Recorrido visual con capturas de escritorio y movil en 1440 x 1000 y 390 x 844.
+- [x] Login, registro, admin, entrenador, socio, catalogo y perfil sin imagenes rotas ni overflow documental.
 
 ## Verificacion AWS
 

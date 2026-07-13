@@ -7,6 +7,7 @@ import useAsyncData from '../../hooks/useAsyncData'
 import useAuth from '../../hooks/useAuth'
 import * as memberService from '../../services/memberService'
 import * as reservationService from '../../services/reservationService'
+import { getSportImage } from '../../utils/sportImages'
 
 const EMPTY_DATA = { dashboard: null, reservations: [] }
 
@@ -40,7 +41,10 @@ export default function MemberDashboardPage() {
             <div className="section-heading"><h2 id="next-classes-title">Clases destacadas</h2><p>Primeras alternativas disponibles en este momento.</p></div>
             <div className="next-classes__list">
               {data.dashboard.next_classes?.map((item) => (
-                <Link key={item.id} to={`/user/classes/${item.id}`}><strong>{item.sport?.name || 'Clase'}</strong><span>{item.room?.name || 'Sala no disponible'}</span></Link>
+                <Link key={item.id} to={`/user/classes/${item.id}`}>
+                  <img alt="" aria-hidden="true" loading="lazy" src={getSportImage(item.sport?.name)} />
+                  <span><strong>{item.sport?.name || 'Clase'}</strong><small>{item.room?.name || 'Sala no disponible'}</small></span>
+                </Link>
               ))}
               {!data.dashboard.next_classes?.length && <span className="field-empty-note">No hay clases destacadas.</span>}
             </div>

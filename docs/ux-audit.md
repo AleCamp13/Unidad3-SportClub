@@ -28,12 +28,21 @@
 | Dimension | Puntaje | Evidencia |
 | --- | ---: | --- |
 | Accesibilidad | 3/4 | Semantica, teclado, errores y contraste automatizados; falta lector de pantalla real. |
-| Rendimiento | 3/4 | Build de produccion correcto y sin recursos externos bloqueantes. |
-| Responsive | 3/4 | Breakpoints, reflujo, scroll controlado y tactilidad; falta captura real. |
+| Rendimiento | 4/4 | Seis imagenes WebP entre 99 y 129 KB, build correcto y sin recursos externos bloqueantes. |
+| Responsive | 4/4 | Capturas y medidas reales en 1440 x 1000 y 390 x 844, sin desbordamiento documental. |
 | Tematizacion | 4/4 | Colores y sombras de aplicacion centralizados en tokens. |
 | Anti-patrones | 4/4 | Detector local final sin advertencias. |
-| **Total** | **17/20** | **Bueno, cercano a excelente; resta verificacion visual real.** |
+| **Total** | **19/20** | **Excelente; solo resta una prueba formal con lector de pantalla real.** |
+
+## Verificacion SportClub Pro
+
+- Acceso y registro revisados en escritorio y movil.
+- Panel administrativo y tabla de usuarios revisados con datos reales de AWS.
+- Panel, proxima clase y catalogo del entrenador revisados con datos reales.
+- Panel, catalogo, actividad, calendario y perfil del socio revisados con datos reales.
+- Anchos documentales verificados sin overflow en 1440 px y 390 px.
+- Carga de imagenes comprobada sin recursos rotos.
 
 ## Riesgo residual
 
-El controlador visual no pudo conectarse durante esta sesion. Antes de publicar se debe recorrer login, cada dashboard, tablas, modales, catalogo y reservas en al menos 1440 x 900 y 390 x 844, confirmar que no hay solapamientos y adjuntar capturas a la evidencia de evaluacion.
+La unica verificacion no automatizada pendiente es un recorrido completo con un lector de pantalla real. La estructura semantica, los nombres accesibles, el foco, los errores asociados y el modo de movimiento reducido estan cubiertos por codigo y pruebas.

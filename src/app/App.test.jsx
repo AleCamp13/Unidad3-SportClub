@@ -54,6 +54,8 @@ describe('application routes', () => {
     expect(screen.getByRole('navigation', { name: 'Navegación principal' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Mi perfil' })).toHaveAttribute('href', '/profile')
     expect(screen.getByText('Demo Admin 1')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Gestionar usuarios' })).toHaveAttribute('href', '/admin/users')
+    expect(screen.getByRole('link', { name: 'Organizar horarios' })).toHaveAttribute('href', '/admin/schedules')
   })
 
   it('redirects an authenticated user away from another role dashboard', async () => {

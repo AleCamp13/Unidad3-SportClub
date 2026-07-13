@@ -33,5 +33,7 @@ describe('AppShell accessibility', () => {
     expect(screen.getByRole('main')).toHaveAttribute('id', 'main-content')
     expect(screen.getByRole('main')).toHaveAttribute('tabindex', '-1')
     expect(screen.getByRole('link', { name: 'Panel' })).toHaveAttribute('aria-current', 'page')
+    expect(screen.getByRole('link', { name: 'SportClub Pro, ir al inicio' })).toBeInTheDocument()
+    expect(screen.getByLabelText('Cuenta activa: Ana Perez, perfil Membresia')).toBeInTheDocument()
   })
 })

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Alert, Button, Form, Spinner } from 'react-bootstrap'
+import { ShieldCheck } from 'lucide-react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import { getRoleDashboard } from '../../routes/rolePaths'
@@ -47,6 +48,10 @@ export default function LoginPage() {
         <p className="page-context">Acceso al club</p>
         <h1 id="login-title">Iniciar sesión</h1>
         <p>Ingresa con tu cuenta para acceder a tu espacio de trabajo.</p>
+      </div>
+      <div className="auth-form__signal">
+        <ShieldCheck aria-hidden="true" size={19} />
+        <span>Tu cuenta conecta cada entrenamiento con la operación real del club.</span>
       </div>
 
       {location.state?.registrationComplete && (
