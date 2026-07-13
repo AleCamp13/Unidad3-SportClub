@@ -108,6 +108,60 @@ describe('MemberReservationsPage', () => {
     await waitFor(() => expect(screen.queryByRole('button', { name: 'Cancelar reserva Yoga · Martes 09:00' })).not.toBeInTheDocument())
     expect(screen.getByLabelText('0 reservas activas')).toBeInTheDocument()
   })
+
+  it('rebooks a cancelled reservation with the same schedule and refreshes reservations', async () => {
+    const user = userEvent.setup()
+    const cancelled = reservation(20, classInfo.schedules[1], 'cancelled')
+    const rebooked = reservation(23, classInfo.schedules[1])
+    reservationService.getMyReservations
+      .mockResolvedValueOnce([cancelled])
+      .mockResolvedValueOnce([rebooked])
+    reservationService.createReservation.mockResolvedValue(rebooked)
+
+    renderPage(<MemberReservationsPage />)
+
+    await user.click(await screen.findByRole('button', { name: /Reservar nuevamente Yoga.*Jueves 09:00/ }))
+
+    await waitFor(() => expect(reservationService.createReservation).toHaveBeenCalledWith('user-token', {
+      class_schedule_id: 2,
+    }))
+    expect(reservationService.getMyReservations).toHaveBeenCalledTimes(2)
+  })
+
+  it('disables rebooking when an active reservation already uses the schedule', async () => {
+    const cancelled = reservation(20, classInfo.schedules[1], 'cancelled')
+    const active = reservation(21, classInfo.schedules[1])
+    reservationService.getMyReservations.mockResolvedValue([cancelled, active])
+
+    renderPage(<MemberReservationsPage />)
+
+    expect(await screen.findByRole('button', { name: /Ya reservada Yoga.*Jueves 09:00/ })).toBeDisabled()
+  })
+
+  it('disables rebooking while the request is pending and ignores a second click', async () => {
+    const user = userEvent.setup()
+    const cancelled = reservation(20, classInfo.schedules[1], 'cancelled')
+    const rebooked = reservation(23, classInfo.schedules[1])
+    let resolveCreateReservation
+    const pendingCreateReservation = new Promise((resolve) => {
+      resolveCreateReservation = resolve
+    })
+    reservationService.getMyReservations.mockResolvedValue([cancelled])
+    reservationService.createReservation.mockReturnValue(pendingCreateReservation)
+
+    renderPage(<MemberReservationsPage />)
+
+    const button = await screen.findByRole('button', { name: /Reservar nuevamente Yoga.*Jueves 09:00/ })
+    await user.click(button)
+    await user.click(button)
+
+    expect(reservationService.createReservation).toHaveBeenCalledTimes(1)
+    expect(button).toBeDisabled()
+    expect(button).toHaveTextContent('Reservando...')
+
+    resolveCreateReservation(rebooked)
+    await waitFor(() => expect(reservationService.getMyReservations).toHaveBeenCalledTimes(2))
+  })
 })
 
 describe('MemberDashboardPage', () => {

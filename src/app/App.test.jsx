@@ -91,6 +91,15 @@ describe('application routes', () => {
     expect(await screen.findByRole('heading', { name: 'Asignaciones' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Asignaciones' })).toHaveAttribute('href', '/admin/assignments')
     expect(screen.getByRole('link', { name: 'Horarios' })).toHaveAttribute('href', '/admin/schedules')
+    expect(screen.getByRole('link', { name: 'Crear clase' })).toHaveAttribute('href', '/admin/classes/new')
+  })
+
+  it('protects guided class creation as an admin-only route', async () => {
+    localStorage.clear()
+    saveSession({ id: 3, full_name: 'Demo User 1', email: 'user1@demo.cl', role: 'user' })
+    renderApp('/admin/classes/new')
+
+    expect(await screen.findByRole('heading', { name: 'Acceso no autorizado' })).toBeInTheDocument()
   })
 
   it('exposes classes and reservations only in member navigation', async () => {
@@ -106,6 +115,7 @@ describe('application routes', () => {
     expect(screen.getByRole('link', { name: 'Clases' })).toHaveAttribute('href', '/user/classes')
     expect(screen.getByRole('link', { name: 'Mis reservas' })).toHaveAttribute('href', '/user/reservations')
     expect(screen.queryByRole('link', { name: 'Usuarios' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Crear clase' })).not.toBeInTheDocument()
   })
 
   it('exposes assigned work only in coach navigation', async () => {

@@ -9,6 +9,7 @@ import AdminRoomsPage from '../pages/admin/AdminRoomsPage'
 import AdminSportsPage from '../pages/admin/AdminSportsPage'
 import AdminUsersPage from '../pages/admin/AdminUsersPage'
 import AdminAssignmentsPage from '../pages/admin/AdminAssignmentsPage'
+import AdminClassCreatePage from '../pages/admin/AdminClassCreatePage'
 import AdminSchedulesPage from '../pages/admin/AdminSchedulesPage'
 import RoleDashboardPage from '../pages/dashboard/RoleDashboardPage'
 import CoachClassesPage from '../pages/coach/CoachClassesPage'
@@ -72,6 +73,7 @@ export default function AppRouter() {
         <Route path="/admin/sports" element={<AdminSportsPage />} />
         <Route path="/admin/rooms" element={<AdminRoomsPage />} />
         <Route path="/admin/assignments" element={<AdminAssignmentsPage />} />
+        <Route path="/admin/classes/new" element={<AdminClassCreatePage />} />
         <Route path="/admin/schedules" element={<AdminSchedulesPage />} />
       </Route>
       <Route element={<ProtectedRoleLayout layout={<CoachLayout />} role="coach" />}>
