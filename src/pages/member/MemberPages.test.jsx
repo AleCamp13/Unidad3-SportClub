@@ -137,6 +137,31 @@ describe('MemberReservationsPage', () => {
 
     expect(await screen.findByRole('button', { name: /Ya reservada Yoga.*Jueves 09:00/ })).toBeDisabled()
   })
+
+  it('disables rebooking while the request is pending and ignores a second click', async () => {
+    const user = userEvent.setup()
+    const cancelled = reservation(20, classInfo.schedules[1], 'cancelled')
+    const rebooked = reservation(23, classInfo.schedules[1])
+    let resolveCreateReservation
+    const pendingCreateReservation = new Promise((resolve) => {
+      resolveCreateReservation = resolve
+    })
+    reservationService.getMyReservations.mockResolvedValue([cancelled])
+    reservationService.createReservation.mockReturnValue(pendingCreateReservation)
+
+    renderPage(<MemberReservationsPage />)
+
+    const button = await screen.findByRole('button', { name: /Reservar nuevamente Yoga.*Jueves 09:00/ })
+    await user.click(button)
+    await user.click(button)
+
+    expect(reservationService.createReservation).toHaveBeenCalledTimes(1)
+    expect(button).toBeDisabled()
+    expect(button).toHaveTextContent('Reservando...')
+
+    resolveCreateReservation(rebooked)
+    await waitFor(() => expect(reservationService.getMyReservations).toHaveBeenCalledTimes(2))
+  })
 })
 
 describe('MemberDashboardPage', () => {

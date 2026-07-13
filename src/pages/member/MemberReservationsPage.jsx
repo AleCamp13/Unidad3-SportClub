@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { Badge, Button, ButtonGroup } from 'react-bootstrap'
 import { CalendarX2, Clock3, MapPin, RotateCcw, UserRound } from 'lucide-react'
 import MemberActivity from '../../components/member/MemberActivity'
@@ -28,6 +28,8 @@ export default function MemberReservationsPage() {
   const loadReservations = useCallback(() => reservationService.getMyReservations(token), [token])
   const { error, isLoading, items: reservations, reload } = useEntityList(loadReservations)
   const [filter, setFilter] = useState('all')
+  const [rebookingScheduleIds, setRebookingScheduleIds] = useState(() => new Set())
+  const rebookingScheduleIdsRef = useRef(new Set())
   const activeScheduleIds = useMemo(() => getActiveScheduleIds(reservations), [reservations])
   const filtered = filter === 'all' ? reservations : reservations.filter((item) => item.status === filter)
 
@@ -50,14 +52,22 @@ export default function MemberReservationsPage() {
   }
 
   const rebookReservation = async (reservation) => {
+    const scheduleId = Number(reservation.class_schedule_id)
+    if (rebookingScheduleIdsRef.current.has(scheduleId)) return
+
+    rebookingScheduleIdsRef.current.add(scheduleId)
+    setRebookingScheduleIds(new Set(rebookingScheduleIdsRef.current))
     try {
       await reservationService.createReservation(token, {
-        class_schedule_id: Number(reservation.class_schedule_id),
+        class_schedule_id: scheduleId,
       })
       await reload()
       await showAdminSuccess('Reserva confirmada nuevamente')
     } catch (requestError) {
       await showAdminError(requestError)
+    } finally {
+      rebookingScheduleIdsRef.current.delete(scheduleId)
+      setRebookingScheduleIds(new Set(rebookingScheduleIdsRef.current))
     }
   }
 
@@ -85,6 +95,9 @@ export default function MemberReservationsPage() {
             <div className="reservation-list">
               {filtered.map((reservation) => {
                 const details = reservationDetails(reservation)
+                const scheduleId = Number(reservation.class_schedule_id)
+                const isAlreadyBooked = activeScheduleIds.has(scheduleId)
+                const isRebooking = rebookingScheduleIds.has(scheduleId)
                 const label = `${details.sportName} · ${details.dayName} ${formatTime(details.schedule.start_time)}`
                 return (
                   <article className="reservation-row" key={reservation.id}>
@@ -96,13 +109,14 @@ export default function MemberReservationsPage() {
                     )}
                     {reservation.status === 'cancelled' && (
                       <Button
-                        aria-label={`${activeScheduleIds.has(Number(reservation.class_schedule_id)) ? 'Ya reservada' : 'Reservar nuevamente'} ${label}`}
-                        disabled={activeScheduleIds.has(Number(reservation.class_schedule_id))}
+                        aria-busy={isRebooking}
+                        aria-label={`${isRebooking ? 'Reservando nuevamente' : isAlreadyBooked ? 'Ya reservada' : 'Reservar nuevamente'} ${label}`}
+                        disabled={isAlreadyBooked || isRebooking}
                         onClick={() => rebookReservation(reservation)}
                         size="sm"
                         variant="outline-primary"
                       >
-                        <RotateCcw aria-hidden="true" size={16} /> {activeScheduleIds.has(Number(reservation.class_schedule_id)) ? 'Ya reservada' : 'Reservar nuevamente'}
+                        <RotateCcw aria-hidden="true" size={16} /> {isRebooking ? 'Reservando...' : isAlreadyBooked ? 'Ya reservada' : 'Reservar nuevamente'}
                       </Button>
                     )}
                   </article>
