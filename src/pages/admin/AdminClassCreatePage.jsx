@@ -76,12 +76,14 @@ export default function AdminClassCreatePage() {
     try {
       await createClass(token, validated, activeReferences.assignments)
       setForm({ ...EMPTY_FORM })
+      await reloadReferences()
       setSuccessMessage('Clase creada. La asignación y el horario quedaron disponibles.')
     } catch (error) {
       setErrors(normalizeFieldErrors(error.errors))
       setRequestError(error.assignmentCreated
         ? 'La vinculación quedó guardada, pero el horario no pudo crearse. Reintenta el horario.'
         : error.message || 'No fue posible crear la clase.')
+      if (error.assignmentCreated) await reloadReferences()
     } finally {
       setIsSaving(false)
     }

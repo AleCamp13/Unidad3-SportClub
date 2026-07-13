@@ -54,9 +54,9 @@ async function fillRequiredFields(user) {
   await user.selectOptions(screen.getByLabelText('Deporte'), '2')
   await user.selectOptions(screen.getByLabelText('Sala'), '3')
   await user.selectOptions(screen.getByLabelText('Entrenador'), '4')
-  await user.selectOptions(screen.getByLabelText('Día de la semana'), '3')
+  await user.selectOptions(screen.getByLabelText(/D.a de la semana/), '3')
   await user.type(screen.getByLabelText('Hora de inicio'), '18:00')
-  await user.type(screen.getByLabelText('Hora de término'), '18:50')
+  await user.type(screen.getByLabelText(/Hora de t.rmino/), '18:50')
 }
 
 beforeEach(() => {
@@ -77,7 +77,7 @@ describe('AdminClassCreatePage', () => {
     expect(screen.queryByRole('option', { name: 'Coach inactivo' })).not.toBeInTheDocument()
 
     await fillRequiredFields(user)
-    await user.type(screen.getByLabelText('Observación'), ' Grupo guiado ')
+    await user.type(screen.getByLabelText(/Observaci.n/), ' Grupo guiado ')
     await user.click(screen.getByRole('button', { name: 'Crear clase' }))
 
     await waitFor(() => expect(createClass).toHaveBeenCalledWith('jwt-token', {
@@ -103,7 +103,7 @@ describe('AdminClassCreatePage', () => {
     await screen.findByRole('option', { name: 'Yoga' })
     await user.click(screen.getByRole('button', { name: 'Crear clase' }))
 
-    expect(await screen.findByText('Selecciona un deporte válido.')).toBeInTheDocument()
+    expect(await screen.findByText(/Selecciona un deporte v.lido/)).toBeInTheDocument()
     expect(createClass).not.toHaveBeenCalled()
   })
 
@@ -118,6 +118,57 @@ describe('AdminClassCreatePage', () => {
     await fillRequiredFields(user)
     await user.click(screen.getByRole('button', { name: 'Crear clase' }))
 
-    expect(await screen.findByRole('alert')).toHaveTextContent('La vinculación quedó guardada, pero el horario no pudo crearse. Reintenta el horario.')
+    expect(await screen.findByRole('alert')).toHaveTextContent(/vinculaci.n qued. guardada, pero el horario no pudo crearse. Reintenta el horario/)
+  })
+
+  it('refreshes assignments before retrying a schedule failure after assignment persistence', async () => {
+    const user = userEvent.setup()
+    const refreshedAssignments = [{ id: 18, sport_id: 2, room_id: 3, coach_id: 4, status: true }]
+    mockReferences({ ...activeReferences, assignments: [] })
+    assignmentService.listAssignments
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce(refreshedAssignments)
+    createClass
+      .mockRejectedValueOnce(new ClassCreationError(new Error('El horario ya existe.'), { assignmentCreated: true }))
+      .mockResolvedValueOnce({ assignment: refreshedAssignments[0], schedule: { id: 21 }, reusedAssignment: true })
+
+    renderPage()
+
+    await screen.findByRole('option', { name: 'Yoga' })
+    await fillRequiredFields(user)
+    await user.click(screen.getByRole('button', { name: 'Crear clase' }))
+
+    await waitFor(() => expect(assignmentService.listAssignments).toHaveBeenCalledTimes(2))
+    expect(await screen.findByRole('alert')).toHaveTextContent(/vinculaci.n qued. guardada, pero el horario no pudo crearse. Reintenta el horario/)
+    await user.click(screen.getByRole('button', { name: 'Crear clase' }))
+
+    await waitFor(() => expect(createClass).toHaveBeenCalledTimes(2))
+    expect(createClass).toHaveBeenNthCalledWith(2, 'jwt-token', expect.any(Object), refreshedAssignments)
+  })
+
+  it('refreshes assignments after creating a class before another same-resource submission', async () => {
+    const user = userEvent.setup()
+    const refreshedAssignments = [{ id: 22, sport_id: 2, room_id: 3, coach_id: 4, status: true }]
+    mockReferences({ ...activeReferences, assignments: [] })
+    assignmentService.listAssignments
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce(refreshedAssignments)
+    createClass
+      .mockResolvedValueOnce({ assignment: refreshedAssignments[0], schedule: { id: 23 }, reusedAssignment: false })
+      .mockResolvedValueOnce({ assignment: refreshedAssignments[0], schedule: { id: 24 }, reusedAssignment: true })
+
+    renderPage()
+
+    await screen.findByRole('option', { name: 'Yoga' })
+    await fillRequiredFields(user)
+    await user.click(screen.getByRole('button', { name: 'Crear clase' }))
+
+    await waitFor(() => expect(assignmentService.listAssignments).toHaveBeenCalledTimes(2))
+    expect(screen.getByLabelText('Deporte')).toHaveValue('')
+    await fillRequiredFields(user)
+    await user.click(screen.getByRole('button', { name: 'Crear clase' }))
+
+    await waitFor(() => expect(createClass).toHaveBeenCalledTimes(2))
+    expect(createClass).toHaveBeenNthCalledWith(2, 'jwt-token', expect.any(Object), refreshedAssignments)
   })
 })
