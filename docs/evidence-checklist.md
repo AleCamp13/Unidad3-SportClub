@@ -20,8 +20,10 @@ Fecha de revision local: 12 de julio de 2026.
 - [x] Panel, clases, horarios y salas del entrenador.
 - [x] Catalogo y detalle de clases del socio.
 - [x] Crear, listar, filtrar y cancelar reservas.
+- [x] Volver a reservar una clase cancelada, con bloqueo de duplicados activos y doble envio.
 - [x] Prevencion de reserva duplicada en UI y respuesta HTTP 409 de la API.
 - [x] Resumen de actividad y calendario derivados de reservas reales.
+- [x] Flujo administrativo guiado para crear asignacion y horario desde un solo formulario.
 
 ## Verificacion automatizada
 
@@ -29,7 +31,7 @@ Fecha de revision local: 12 de julio de 2026.
 - [x] Contrastes principales: 5.12:1 a 17.03:1, todos sobre el minimo AA.
 - [x] Detector de anti-patrones visuales: cero advertencias despues del pulido.
 - [x] Build Vite ejecutado despues del pulido de estilos.
-- [x] Suite completa SportClub Pro: 29 archivos y 113 pruebas aprobadas; ESLint y build limpios.
+- [x] Suite completa SportClub Pro: 32 archivos y 128 pruebas aprobadas; ESLint y build limpios.
 - [x] `npm audit --omit=dev`: cero vulnerabilidades en dependencias de produccion.
 - [x] Seis fotografias deportivas optimizadas a WebP, entre 99 y 129 KB por archivo.
 - [x] Contrastes SportClub Pro entre 6.84:1 y 16.72:1 para texto principal y secundario.
@@ -51,6 +53,7 @@ Fecha de revision local: 12 de julio de 2026.
 - [x] Portada, `/login` y refresh directo de `/user/classes` responden HTTP 200.
 - [x] CSS y JavaScript de produccion responden HTTP 200 desde la Elastic IP.
 - [x] SportClub Pro y sus seis imagenes WebP verificados en escritorio y movil tras el despliegue final.
+- [x] Catalogo real con Yoga, Spinning y Entrenamiento Funcional; formulario Crear clase y re-reserva verificados en produccion.
 - [x] Login y endpoint protegido verificados con HTTP 200 para admin, coach y user.
 - [x] Docker y Nginx activos y habilitados; MariaDB healthy y reinicio de contenedores en `always`.
 
