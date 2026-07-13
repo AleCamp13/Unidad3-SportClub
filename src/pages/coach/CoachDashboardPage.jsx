@@ -6,6 +6,7 @@ import useAuth from '../../hooks/useAuth'
 import * as coachService from '../../services/coachService'
 import { formatTime } from '../../utils/formatters'
 import { DAY_LABELS } from '../../utils/reservationUtils'
+import { getSportImage } from '../../utils/sportImages'
 
 export default function CoachDashboardPage() {
   const { token, user } = useAuth()
@@ -32,9 +33,9 @@ export default function CoachDashboardPage() {
             <div className="section-heading"><h2 id="coach-next-class-title">Próxima clase</h2><p>Primer horario activo informado por el backend.</p></div>
             {data.next_class ? (
               <div className="coach-next-class__detail">
-                <strong>{nextAssignment?.sport?.name || 'Clase no disponible'}</strong>
+                <img alt="" aria-hidden="true" src={getSportImage(nextAssignment?.sport?.name)} />
+                <div><strong>{nextAssignment?.sport?.name || 'Clase no disponible'}</strong><span>{nextAssignment?.room?.name || 'Sala no disponible'}</span></div>
                 <span>{nextDay || 'Día no disponible'} · {formatTime(data.next_class.start_time)} - {formatTime(data.next_class.end_time)}</span>
-                <span>{nextAssignment?.room?.name || 'Sala no disponible'}</span>
               </div>
             ) : <p className="field-empty-note">No tienes una próxima clase asignada.</p>}
           </section>

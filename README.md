@@ -19,6 +19,12 @@ SPA desarrollada con React para la evaluacion individual N33 de Frontend. Consum
 - Vitest y React Testing Library para pruebas automatizadas.
 - Lucide React para iconografia consistente.
 
+## SportClub Pro
+
+La interfaz utiliza una identidad operativa comun para los tres roles: acceso fotografico, navegacion responsive, panel administrativo compacto, agenda visual para entrenadores y catalogo deportivo para socios. Las fotografias se resuelven por nombre de deporte y tienen un fallback seguro; los seis recursos estan optimizados a WebP para conservar calidad sin aumentar innecesariamente el peso del sitio.
+
+El rediseño mantiene intactos los servicios, rutas, permisos, validaciones y payloads de la API. La verificacion final incluye 113 pruebas, lint, build, auditoria de dependencias, contraste AA y capturas reales en escritorio y movil.
+
 ## Requisitos
 
 - Node.js 20 o superior.

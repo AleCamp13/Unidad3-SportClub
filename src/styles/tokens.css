@@ -1,12 +1,16 @@
 :root {
-  --color-ink: #171321;
+  --color-ink: #18131f;
   --color-club-purple: #2e1a47;
   --color-club-purple-deep: #211132;
+  --color-club-purple-mid: #4c3564;
   --color-gold: #f2b705;
-  --color-paper: #f6f7fb;
+  --color-gold-ink: #624900;
+  --color-gold-soft: #fff3c8;
+  --color-paper: #f4f5f8;
   --color-surface: #ffffff;
-  --color-border: #d9dbe5;
-  --color-muted: #5d5968;
+  --color-surface-subtle: #fafafd;
+  --color-border: #d7d8e1;
+  --color-muted: #575361;
   --color-admin: #c83a30;
   --color-coach: #187a60;
   --color-member: #2764d7;
@@ -38,6 +42,7 @@
   --radius-md: 8px;
   --shadow-header: 0 2px 8px rgb(23 19 33 / 14%);
   --shadow-focus: 0 0 0 3px rgb(46 26 71 / 14%);
+  --shadow-auth: 0 18px 44px rgb(16 9 25 / 28%);
   --shadow-modal: 0 16px 44px rgb(23 19 33 / 22%);
 
   --z-sidebar: 20;

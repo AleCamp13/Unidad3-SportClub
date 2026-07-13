@@ -3,6 +3,7 @@ import { CalendarDays, Clock3, MapPin, UserRound, UsersRound } from 'lucide-reac
 import { Link } from 'react-router-dom'
 import { formatTime } from '../../utils/formatters'
 import { DAY_LABELS } from '../../utils/reservationUtils'
+import { getSportImage } from '../../utils/sportImages'
 
 function coachLabel(coach) {
   return coach?.full_name || coach?.email || 'Entrenador no disponible'
@@ -14,6 +15,9 @@ export default function ClassOffering({ activeScheduleIds, classInfo, detailLink
 
   return (
     <article className="class-offering">
+      <div className="class-offering__media">
+        <img alt="" aria-hidden="true" loading="lazy" src={getSportImage(sportName)} />
+      </div>
       <header className="class-offering__header">
         <div>
           <p className="page-context">{classInfo.room?.name || 'Sala no disponible'}</p>

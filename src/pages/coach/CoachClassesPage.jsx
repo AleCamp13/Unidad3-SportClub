@@ -6,6 +6,7 @@ import useEntityList from '../../hooks/useEntityList'
 import * as coachService from '../../services/coachService'
 import { formatTime } from '../../utils/formatters'
 import { DAY_LABELS } from '../../utils/reservationUtils'
+import { getSportImage } from '../../utils/sportImages'
 
 export default function CoachClassesPage() {
   const { token } = useAuth()
@@ -21,6 +22,9 @@ export default function CoachClassesPage() {
         {!isLoading && !error && classes.length === 0 && <EmptyState description="Cuando administración te asigne una clase aparecerá aquí." title="No tienes clases asignadas" />}
         {!isLoading && !error && classes.map((item) => (
           <article className="coach-class" key={item.id}>
+            <div className="coach-class__media">
+              <img alt="" aria-hidden="true" loading="lazy" src={getSportImage(item.sport?.name)} />
+            </div>
             <div className="coach-class__title"><div><p className="page-context">{item.room?.name || 'Sala no disponible'}</p><h2>{item.sport?.name || 'Clase no disponible'}</h2><p>{item.sport?.objective || 'Objetivo no disponible.'}</p></div><span><UsersRound aria-hidden="true" size={16} />Cupo {item.room?.capacity || '—'}</span></div>
             <div className="coach-class__location"><MapPin aria-hidden="true" size={16} />{item.room?.location || 'Sin ubicación'}</div>
             <div className="coach-schedule-list">

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Alert, Button, Col, Form, Row, Spinner } from 'react-bootstrap'
-import { Plus, Trash2 } from 'lucide-react'
+import { BadgeCheck, Plus, Trash2 } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import { validateRegistration } from '../../utils/authValidation'
@@ -57,6 +57,10 @@ export default function RegisterPage() {
         <p className="page-context">Nueva membresía</p>
         <h1 id="register-title">Crear cuenta</h1>
         <p>Todos los registros nuevos se crean con perfil de usuario.</p>
+      </div>
+      <div className="auth-form__signal">
+        <BadgeCheck aria-hidden="true" size={19} />
+        <span>Completa tus datos personales y deportivos en un solo paso.</span>
       </div>
       {requestError && <Alert variant="danger">{requestError}</Alert>}
 

@@ -72,6 +72,9 @@ describe('MemberClassesPage', () => {
     renderPage(<MemberClassesPage />)
 
     expect(await screen.findByRole('button', { name: 'Reservado: Yoga, Martes 09:00' })).toBeDisabled()
+    expect(screen.queryByRole('img', { name: 'Clase de Yoga en SportClub' })).not.toBeInTheDocument()
+    expect(document.querySelector('.class-offering__media img'))
+      .toHaveAttribute('src', '/assets/sports/yoga.webp')
     await user.click(screen.getByRole('button', { name: 'Reservar Yoga, Jueves 09:00' }))
     await user.click(screen.getByRole('button', { name: 'Confirmar reserva' }))
 
