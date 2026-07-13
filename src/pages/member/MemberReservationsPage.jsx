@@ -1,6 +1,6 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { Badge, Button, ButtonGroup } from 'react-bootstrap'
-import { CalendarX2, Clock3, MapPin, UserRound } from 'lucide-react'
+import { CalendarX2, Clock3, MapPin, RotateCcw, UserRound } from 'lucide-react'
 import MemberActivity from '../../components/member/MemberActivity'
 import { EmptyState, ErrorState, LoadingState } from '../../components/feedback/FeedbackStates'
 import useAuth from '../../hooks/useAuth'
@@ -8,7 +8,7 @@ import useEntityList from '../../hooks/useEntityList'
 import * as reservationService from '../../services/reservationService'
 import { confirmAdminAction, showAdminError, showAdminSuccess } from '../../utils/adminAlerts'
 import { formatTime } from '../../utils/formatters'
-import { DAY_LABELS } from '../../utils/reservationUtils'
+import { DAY_LABELS, getActiveScheduleIds } from '../../utils/reservationUtils'
 
 function reservationDetails(reservation) {
   const schedule = reservation.classSchedule || {}
@@ -28,6 +28,7 @@ export default function MemberReservationsPage() {
   const loadReservations = useCallback(() => reservationService.getMyReservations(token), [token])
   const { error, isLoading, items: reservations, reload } = useEntityList(loadReservations)
   const [filter, setFilter] = useState('all')
+  const activeScheduleIds = useMemo(() => getActiveScheduleIds(reservations), [reservations])
   const filtered = filter === 'all' ? reservations : reservations.filter((item) => item.status === filter)
 
   const cancelReservation = async (reservation) => {
@@ -43,6 +44,18 @@ export default function MemberReservationsPage() {
       await reservationService.cancelReservation(token, reservation.id)
       await reload()
       await showAdminSuccess('Reserva cancelada')
+    } catch (requestError) {
+      await showAdminError(requestError)
+    }
+  }
+
+  const rebookReservation = async (reservation) => {
+    try {
+      await reservationService.createReservation(token, {
+        class_schedule_id: Number(reservation.class_schedule_id),
+      })
+      await reload()
+      await showAdminSuccess('Reserva confirmada nuevamente')
     } catch (requestError) {
       await showAdminError(requestError)
     }
@@ -80,6 +93,17 @@ export default function MemberReservationsPage() {
                     <Badge bg={reservation.status === 'active' ? 'success' : 'secondary'}>{reservation.status === 'active' ? 'Activa' : 'Cancelada'}</Badge>
                     {reservation.status === 'active' && (
                       <Button aria-label={`Cancelar reserva ${label}`} onClick={() => cancelReservation(reservation)} size="sm" variant="outline-danger"><CalendarX2 aria-hidden="true" size={16} /> Cancelar</Button>
+                    )}
+                    {reservation.status === 'cancelled' && (
+                      <Button
+                        aria-label={`${activeScheduleIds.has(Number(reservation.class_schedule_id)) ? 'Ya reservada' : 'Reservar nuevamente'} ${label}`}
+                        disabled={activeScheduleIds.has(Number(reservation.class_schedule_id))}
+                        onClick={() => rebookReservation(reservation)}
+                        size="sm"
+                        variant="outline-primary"
+                      >
+                        <RotateCcw aria-hidden="true" size={16} /> {activeScheduleIds.has(Number(reservation.class_schedule_id)) ? 'Ya reservada' : 'Reservar nuevamente'}
+                      </Button>
                     )}
                   </article>
                 )
