@@ -1,4 +1,4 @@
-import { ArrowRight, Building2, CalendarClock, CircleUserRound, Dumbbell, Link2, UsersRound } from 'lucide-react'
+import { ArrowRight, Building2, CalendarClock, CalendarPlus2, CircleUserRound, Dumbbell, Link2, UsersRound } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 
@@ -9,6 +9,7 @@ const CONTENT = {
 }
 
 const ADMIN_ACTIONS = [
+  { to: '/admin/classes/new', label: 'Crear clase', description: 'Vincula recursos y programa el horario', icon: CalendarPlus2 },
   { to: '/admin/users', label: 'Gestionar usuarios', description: 'Cuentas, roles y datos de acceso', icon: UsersRound },
   { to: '/admin/sports', label: 'Gestionar deportes', description: 'Oferta, duracion y objetivos', icon: Dumbbell },
   { to: '/admin/rooms', label: 'Gestionar salas', description: 'Capacidad, ubicacion y estado', icon: Building2 },

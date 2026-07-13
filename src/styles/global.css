@@ -776,6 +776,45 @@ button:focus-visible {
   flex: 0 0 auto;
 }
 
+.class-create {
+  max-width: 920px;
+}
+
+.class-create-form {
+  display: grid;
+  gap: 22px;
+  margin-top: 26px;
+  padding: 24px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.class-create-section {
+  display: grid;
+  gap: 16px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.class-create-section h2 {
+  color: var(--color-club-purple);
+  font-size: 1.5rem;
+}
+
+.class-create-section .row {
+  row-gap: 16px;
+}
+
+.class-create-observation {
+  margin-top: 16px;
+}
+
+.class-create-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .field-empty-note {
   margin: 0 0 14px;
   color: var(--color-muted);
@@ -2323,6 +2362,15 @@ button:focus-visible {
 
   .profile-section > form {
     padding: 18px;
+  }
+
+  .class-create-form {
+    gap: 18px;
+    padding: 18px;
+  }
+
+  .class-create-actions .btn {
+    width: 100%;
   }
 }
 

@@ -1,4 +1,4 @@
-import { Building2, CalendarCheck2, CalendarClock, Dumbbell, LayoutDashboard, Link2, UserRound, UsersRound } from 'lucide-react'
+import { Building2, CalendarCheck2, CalendarClock, CalendarPlus2, Dumbbell, LayoutDashboard, Link2, UserRound, UsersRound } from 'lucide-react'
 import AppShell from '../components/layout/AppShell'
 import useAuth from '../hooks/useAuth'
 
@@ -13,6 +13,7 @@ const ADMIN_NAV_ITEMS = [
   { to: '/admin/users', label: 'Usuarios', icon: UsersRound },
   { to: '/admin/sports', label: 'Deportes', icon: Dumbbell },
   { to: '/admin/rooms', label: 'Salas', icon: Building2 },
+  { to: '/admin/classes/new', label: 'Crear clase', icon: CalendarPlus2 },
   { to: '/admin/assignments', label: 'Asignaciones', icon: Link2 },
   { to: '/admin/schedules', label: 'Horarios', icon: CalendarClock },
 ]
